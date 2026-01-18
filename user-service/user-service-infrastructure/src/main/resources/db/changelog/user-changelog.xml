@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1722564484_createUser" author="Dylan Zote">
+        <createTable tableName="users">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="keycloak_user_id" type="varchar(255)"/>
+            <column name="first_name" type="varchar(255)"/>
+            <column name="last_name" type="varchar(255)"/>
+            <column name="user_name" type="varchar(255)"/>
+            <column name="email" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="phone_number" type="varchar(255)"/>
+            <column name="date_of_birth" type="varchar(255)"/>
+            <column name="password" type="varchar(255)"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="email_confirmed" type="boolean" defaultValueBoolean="false"/>
+            <column name="new_user" type="boolean" defaultValueBoolean="true"/>
+            <column name="gender" type="varchar(50)"/>
+            <column name="language" type="varchar(50)"/>
+            <column name="town" type="varchar(255)"/>
+            <column name="address" type="varchar(255)"/>
+            <column name="image_url" type="varchar(255)"/>
+            <column name="branch_id" type="varchar(255)"/>
+            <column name="department" type="varchar(255)"/>
+            <column name="two_factor_enabled" type="boolean" defaultValueBoolean="false"/>
+            <column name="two_factor_verified" type="boolean" defaultValueBoolean="false"/>
+            <column name="two_factor_method" type="varchar(50)"/>
+            <column name="two_factor_secret" type="varchar(255)"/>
+            <column name="two_factor_backup_codes" type="varchar(1000)"/>
+            <column name="last_login" type="timestamp"/>
+            <column name="deleted" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted_at" type="timestamp"/>
+            <column name="deleted_by" type="varchar(255)"/>
+            <column name="failed_login_attempts" type="integer" defaultValueNumeric="0"/>
+            <column name="account_locked_until" type="timestamp"/>
+            <column name="password_changed_at" type="timestamp"/>
+            <column name="terms_accepted_at" type="timestamp"/>
+            <column name="privacy_policy_accepted_at" type="timestamp"/>
+            <column name="must_change_password" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

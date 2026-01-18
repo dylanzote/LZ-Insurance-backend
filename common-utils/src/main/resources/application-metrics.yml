@@ -1,0 +1,87 @@
+metrics:
+  application-name: ${spring.application.name}
+  region: ${REGION:us-east-1}
+  zone: ${ZONE:zone-a}
+  version: ${APP_VERSION:1.0.0}
+  step-seconds: 30
+  percentiles: [0.5, 0.75, 0.95, 0.99, 0.999]
+  percentile-precision: 2
+  minimum-expected-value: 1
+  maximum-expected-value: 60000
+  buffer-length: 3
+
+
+  # Enable/disable metric categories
+  enable-jvm-metrics: true
+  enable-system-metrics: true
+  enable-log-metrics: true
+  enable-http-metrics: true
+  enable-database-metrics: ${DB_METRICS_ENABLED:false}
+  enable-kafka-metrics: ${KAFKA_METRICS_ENABLED:true}
+  enable-cache-metrics: ${CACHE_METRICS_ENABLED:false}
+
+  http:
+    enable-client-metrics: true
+    enable-server-metrics: true
+    client-timeout-warning: 5s
+    server-timeout-warning: 10s
+    exclude-uris:
+      - "/actuator/**"
+      - "/swagger-ui/**"
+      - "/v3/api-docs/**"
+
+
+  kafka:
+    enable-producer-metrics: true
+    enable-consumer-metrics: true
+    enable-admin-metrics: false
+    consumer-lag-warning: 5m
+    topic-labels:
+      payments: "financial"
+      notifications: "notification"
+
+  custom:
+    additional-tags:
+      team: "platform"
+      component: "backend"
+    enabled-business-metrics:
+      - "user.registration"
+      - "payment.processed"
+      - "order.created"
+    enable-custom-meters: true
+
+# Spring Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+#  prometheus:
+#    metrics:
+#      export:
+#        enabled: true
+#        step: 30s
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      sla:
+        http.server.requests: 100ms, 500ms, 1s
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    health:
+      show-details: when_authorized
+      probes:
+        enabled: true
+      show-components: always
+      group:
+        metrics:
+          include: metrics
+          show-details: always
+        readiness:
+          include: readinessState
+      status:
+        order: DOWN, OUT_OF_SERVICE, UP, UNKNOWN, DEGRADED

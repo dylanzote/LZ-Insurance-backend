@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 650px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #ffffff;
+            padding: 45px 25px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 0;
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        .content {
+            padding: 45px 35px;
+        }
+        .lang-section {
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .lang-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .lang-label {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+        .greeting {
+            font-size: 22px;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .message {
+            font-size: 16px;
+            line-height: 1.9;
+            margin-bottom: 25px;
+            color: #495057;
+        }
+        .credentials-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 5px solid #1e3c72;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+        .credentials-box h3 {
+            margin: 0 0 20px 0;
+            color: #1e3c72;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .credential-item {
+            margin: 15px 0;
+            padding: 12px 15px;
+            background-color: #ffffff;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+        }
+        .credential-label {
+            font-weight: 600;
+            color: #495057;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .credential-value {
+            color: #1e3c72;
+            font-size: 16px;
+            font-weight: 600;
+            word-break: break-all;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff !important;
+            padding: 16px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 25px 0;
+            text-align: center;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        .warning-box p {
+            margin: 0;
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .warning-box strong {
+            color: #664d03;
+        }
+        .steps-list {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .steps-list h4 {
+            margin: 0 0 15px 0;
+            color: #1e3c72;
+            font-size: 16px;
+        }
+        .steps-list ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .steps-list li {
+            margin: 10px 0;
+            color: #495057;
+            line-height: 1.7;
+        }
+        .support-section {
+            background-color: #e7f3ff;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .support-section h4 {
+            margin: 0 0 10px 0;
+            color: #1e3c72;
+            font-size: 18px;
+        }
+        .support-section p {
+            margin: 5px 0;
+            color: #495057;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        .footer p {
+            margin: 5px 0;
+        }
+        .footer a {
+            color: #1e3c72;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #dee2e6, transparent);
+            margin: 30px 0;
+        }
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+            .header h1 {
+                font-size: 26px;
+            }
+            .greeting {
+                font-size: 20px;
+            }
+            .cta-button {
+                padding: 14px 30px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <h1 th:text="#{admin.header}">🎉 Welcome to LZ Insurance</h1>
+            <p th:text="#{admin.subheader}">Your Account Has Been Created</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            
+            <!-- French Section -->
+            <div class="lang-section">
+                <span class="lang-label">🇫🇷 FRANÇAIS</span>
+                
+                <p class="greeting">
+                    <span th:text="#{admin.greeting_fr(${firstName})}">Bonjour [Prénom],</span>
+                </p>
+                
+                <p class="message">
+                    <span th:utext="#{admin.welcome_message_fr}">
+                        Bienvenue chez <strong>LZ Insurance</strong> ! Un administrateur a créé un compte pour vous sur notre plateforme de gestion.
+                    </span>
+                </p>
+
+                <!-- Credentials Box -->
+                <div class="credentials-box">
+                    <h3><span th:text="#{admin.credentials_title_fr}">🔐 Vos Identifiants de Connexion</span></h3>
+                    
+                    <div class="credential-item">
+                        <span class="credential-label"><span th:text="#{admin.email_label_fr}">Adresse Email</span></span>
+                        <span class="credential-value" th:text="${email}">user@example.com</span>
+                    </div>
+                </div>
+
+                <!-- Warning Box -->
+                <div class="warning-box">
+                    <p>
+                        <strong><span th:text="#{admin.security_notice_fr}">⚠️ Important pour votre sécurité :</span></strong><br/>
+                        <span th:utext="#{admin.security_message_fr}">
+                            Pour des raisons de sécurité, aucun mot de passe temporaire n'est fourni par email. 
+                            Veuillez utiliser le lien ci-dessous pour créer votre propre mot de passe sécurisé.
+                        </span>
+                    </p>
+                </div>
+
+                <!-- Steps -->
+                <div class="steps-list">
+                    <h4><span th:text="#{admin.steps_title_fr}">📋 Étapes pour Activer Votre Compte</span></h4>
+                    <ol>
+                        <li><span th:utext="#{admin.step1_fr}">Cliquez sur le bouton <strong>"Créer Mon Mot de Passe"</strong> ci-dessous</span></li>
+                        <li><span th:text="#{admin.step2_fr}">Créez un mot de passe fort et sécurisé</span></li>
+                        <li><span th:text="#{admin.step3_fr}">Connectez-vous avec votre email et votre nouveau mot de passe</span></li>
+                        <li><span th:text="#{admin.step4_fr}">Complétez votre profil si nécessaire</span></li>
+                    </ol>
+                </div>
+
+                <!-- CTA Button -->
+                <div style="text-align: center;">
+                    <a th:href="${passwordResetUrl}" class="cta-button">
+                        <span th:text="#{admin.cta_button_fr}">🔑 Créer Mon Mot de Passe</span>
+                    </a>
+                </div>
+
+                <p class="message" style="font-size: 14px; color: #6c757d; margin-top: 20px;">
+                    <span th:utext="#{admin.link_expiry_fr(${tokenExpiryHours})}">
+                        <strong>Note :</strong> Ce lien est valable pendant <strong>24 heures</strong>. 
+                        Si le lien expire, veuillez contacter votre administrateur.
+                    </span>
+                </p>
+
+                <!-- Support Section -->
+                <div class="support-section">
+                    <h4><span th:text="#{admin.support_title_fr}">💬 Besoin d'Aide ?</span></h4>
+                    <p><span th:text="#{admin.support_message_fr}">Notre équipe de support est là pour vous aider.</span></p>
+                    <p>
+                        <strong><span th:text="#{admin.support_email_fr}">Email :</span></strong> 
+                        <a th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}">support@lzinsurance.com</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- English Section -->
+            <div class="lang-section">
+                <span class="lang-label">🇬🇧 ENGLISH</span>
+                
+                <p class="greeting">
+                    <span th:text="#{admin.greeting_en(${firstName})}">Hello [FirstName],</span>
+                </p>
+                
+                <p class="message">
+                    <span th:utext="#{admin.welcome_message_en}">
+                        Welcome to <strong>LZ Insurance</strong>! An administrator has created an account for you on our management platform.
+                    </span>
+                </p>
+
+                <!-- Credentials Box -->
+                <div class="credentials-box">
+                    <h3><span th:text="#{admin.credentials_title_en}">🔐 Your Login Credentials</span></h3>
+                    
+                    <div class="credential-item">
+                        <span class="credential-label"><span th:text="#{admin.email_label_en}">Email Address</span></span>
+                        <span class="credential-value" th:text="${email}">user@example.com</span>
+                    </div>
+                </div>
+
+                <!-- Warning Box -->
+                <div class="warning-box">
+                    <p>
+                        <strong><span th:text="#{admin.security_notice_en}">⚠️ Important Security Notice:</span></strong><br/>
+                        <span th:utext="#{admin.security_message_en}">
+                            For security reasons, no temporary password is provided via email. 
+                            Please use the link below to create your own secure password.
+                        </span>
+                    </p>
+                </div>
+
+                <!-- Steps -->
+                <div class="steps-list">
+                    <h4><span th:text="#{admin.steps_title_en}">📋 Steps to Activate Your Account</span></h4>
+                    <ol>
+                        <li><span th:utext="#{admin.step1_en}">Click the <strong>"Create My Password"</strong> button below</span></li>
+                        <li><span th:text="#{admin.step2_en}">Create a strong and secure password</span></li>
+                        <li><span th:text="#{admin.step3_en}">Log in with your email and new password</span></li>
+                        <li><span th:text="#{admin.step4_en}">Complete your profile if necessary</span></li>
+                    </ol>
+                </div>
+
+                <!-- CTA Button -->
+                <div style="text-align: center;">
+                    <a th:href="${passwordResetUrl}" class="cta-button">
+                        <span th:text="#{admin.cta_button_en}">🔑 Create My Password</span>
+                    </a>
+                </div>
+
+                <p class="message" style="font-size: 14px; color: #6c757d; margin-top: 20px;">
+                    <span th:utext="#{admin.link_expiry_en(${tokenExpiryHours})}">
+                        <strong>Note:</strong> This link is valid for <strong>24 hours</strong>. 
+                        If the link expires, please contact your administrator.
+                    </span>
+                </p>
+
+                <!-- Support Section -->
+                <div class="support-section">
+                    <h4><span th:text="#{admin.support_title_en}">💬 Need Help?</span></h4>
+                    <p><span th:text="#{admin.support_message_en}">Our support team is here to help you.</span></p>
+                    <p>
+                        <strong><span th:text="#{admin.support_email_en}">Email:</span></strong> 
+                        <a th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}">support@lzinsurance.com</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p th:text="#{admin.footer_company}">© 2024 LZ Insurance. All rights reserved.</p>
+            <p th:utext="#{admin.footer_confidential}">
+                This email contains confidential information. If you received this by mistake, please delete it.
+            </p>
+            <p>
+                <a th:href="${privacyPolicyUrl}" th:text="#{admin.footer_privacy}">Privacy Policy</a> | 
+                <a th:href="${termsUrl}" th:text="#{admin.footer_terms}">Terms of Service</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

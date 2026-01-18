@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - include:
+      file: "classpath:db/changelog/user-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/role-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/permission-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/user-role-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/role-permission-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/user-activity-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/user-token-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/default-data-changelog.xml"

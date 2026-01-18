@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - LZ Insurance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .lang-section {
+            margin-bottom: 35px;
+        }
+
+        .lang-label {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 14px;
+            color: #10b981;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .greeting {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .verify-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 16px 32px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .verify-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .link-container {
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+
+        .link-container p {
+            font-size: 13px;
+            color: #718096;
+            margin-bottom: 8px;
+        }
+
+        .link-container a {
+            color: #10b981;
+            text-decoration: none;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        .info-box {
+            background-color: #ecfdf5;
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 6px;
+        }
+
+        .info-box p {
+            font-size: 15px;
+            color: #4a5568;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .warning-box {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 6px;
+        }
+
+        .warning-box p {
+            font-size: 15px;
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        .warning-box strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .support-section {
+            background-color: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+
+        .support-section h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .support-section p {
+            font-size: 14px;
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+
+        .support-section a {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .support-section a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+            margin: 30px 0;
+        }
+
+        .footer {
+            background-color: #2d3748;
+            color: #cbd5e0;
+            padding: 25px 30px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .footer p {
+            margin: 8px 0;
+        }
+
+        .footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media only screen and (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .greeting {
+                font-size: 18px;
+            }
+
+            .message {
+                font-size: 15px;
+            }
+
+            .verify-button {
+                padding: 14px 28px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <!-- Header -->
+    <div class="header">
+        <h1 th:text="#{email_verification.header}">✉️ Email Verification</h1>
+        <p th:text="#{email_verification.subheader}">Verify Your Email Address</p>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- French Section -->
+        <div class="lang-section">
+            <span class="lang-label">🇫🇷 FRANÇAIS</span>
+            <p class="greeting" th:text="#{email_verification.greeting_fr(${firstName})}">Bonjour,</p>
+            <p class="message" th:utext="#{email_verification.message_fr}">
+                Merci de vous être inscrit ! Veuillez vérifier votre adresse email en cliquant sur le bouton ci-dessous pour activer votre compte.
+            </p>
+
+            <!-- Verify Button -->
+            <div class="button-container">
+                <a th:href="${emailVerificationUrl}" class="verify-button" th:text="#{email_verification.cta_button_fr}">
+                    ✉️ Vérifier mon email
+                </a>
+            </div>
+
+            <!-- Alternative Link -->
+            <div class="link-container">
+                <p th:text="#{email_verification.link_label_fr}">Ou copiez et collez ce lien dans votre navigateur :</p>
+                <a th:href="${emailVerificationUrl}" th:text="${emailVerificationUrl}"></a>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <p>
+                    <strong th:text="#{email_verification.info_title_fr}">📋 Informations importantes</strong><br/>
+                    <span th:utext="#{email_verification.info_message_fr(${tokenExpiryHours})}">
+                        Ce lien de vérification est valide pendant <strong>${tokenExpiryHours}</strong> heures. 
+                        Si vous n'avez pas créé de compte, vous pouvez ignorer cet email en toute sécurité.
+                    </span>
+                </p>
+            </div>
+
+            <!-- Warning Box -->
+            <div class="warning-box">
+                <p>
+                    <strong th:text="#{email_verification.warning_title_fr}">⚠️ Important</strong>
+                    <span th:utext="#{email_verification.warning_message_fr}">
+                        Si vous n'avez pas créé de compte avec cette adresse email, ignorez cet email. 
+                        Votre compte ne sera pas activé.
+                    </span>
+                </p>
+            </div>
+
+            <!-- Support Section -->
+            <div class="support-section">
+                <h4 th:text="#{email_verification.support_title_fr}">💬 Besoin d'aide ?</h4>
+                <p th:utext="#{email_verification.support_message_fr}">
+                    Si vous avez des questions concernant votre compte, notre équipe de support est là pour vous aider.
+                </p>
+                <p>
+                    <strong th:text="#{email_verification.support_email_label_fr}">E-mail :</strong>
+                    <a th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}">support@lz-insurance.com</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- English Section -->
+        <div class="lang-section">
+            <span class="lang-label">🇬🇧 ENGLISH</span>
+            <p class="greeting" th:text="#{email_verification.greeting_en(${firstName})}">Hello,</p>
+            <p class="message" th:utext="#{email_verification.message_en}">
+                Thank you for signing up! Please verify your email address by clicking the button below to activate your account.
+            </p>
+
+            <!-- Verify Button -->
+            <div class="button-container">
+                <a th:href="${emailVerificationUrl}" class="verify-button" th:text="#{email_verification.cta_button_en}">
+                    ✉️ Verify My Email
+                </a>
+            </div>
+
+            <!-- Alternative Link -->
+            <div class="link-container">
+                <p th:text="#{email_verification.link_label_en}">Or copy and paste this link into your browser:</p>
+                <a th:href="${emailVerificationUrl}" th:text="${emailVerificationUrl}"></a>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <p>
+                    <strong th:text="#{email_verification.info_title_en}">📋 Important Information</strong><br/>
+                    <span th:utext="#{email_verification.info_message_en(${tokenExpiryHours})}">
+                        This verification link is valid for <strong>${tokenExpiryHours}</strong> hours. 
+                        If you did not create an account, you can safely ignore this email.
+                    </span>
+                </p>
+            </div>
+
+            <!-- Warning Box -->
+            <div class="warning-box">
+                <p>
+                    <strong th:text="#{email_verification.warning_title_en}">⚠️ Important</strong>
+                    <span th:utext="#{email_verification.warning_message_en}">
+                        If you did not create an account with this email address, please ignore this email. 
+                        Your account will not be activated.
+                    </span>
+                </p>
+            </div>
+
+            <!-- Support Section -->
+            <div class="support-section">
+                <h4 th:text="#{email_verification.support_title_en}">💬 Need Help?</h4>
+                <p th:utext="#{email_verification.support_message_en}">
+                    If you have any questions about your account, our support team is here to help you.
+                </p>
+                <p>
+                    <strong th:text="#{email_verification.support_email_label_en}">Email:</strong>
+                    <a th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}">support@lz-insurance.com</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p th:text="#{email_verification.footer_company}">© 2024 LZ Insurance. All rights reserved.</p>
+        <p th:text="#{email_verification.footer_confidential}">This message is confidential.</p>
+        <p>
+            <a th:href="${privacyUrl}" th:text="#{email_verification.footer_privacy}">Privacy Policy</a> |
+            <a th:href="${termsUrl}" th:text="#{email_verification.footer_terms}">Terms of Service</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>
+
+

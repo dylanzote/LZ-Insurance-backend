@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - include:
+      file: "classpath:db/changelog/notification-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/deadLetterQueue-chagelog.xml"
+  - include:
+      file: "classpath:db/changelog/notificationProvider-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/notification-templates-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/template-translations-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/user-devices-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/user-notification-preferences-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/provider-health-metrics-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/seed-welcome-templates.xml"

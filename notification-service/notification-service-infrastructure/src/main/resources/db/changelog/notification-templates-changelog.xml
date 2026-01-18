@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="create-notification-templates-table" author="Dylan_zote">
+        <createTable tableName="notification_templates">
+            <column name="id" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="channel" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="template_path" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject_template" type="TEXT"/>
+            <column name="body_template" type="TEXT"/>
+            <column name="variables_schema" type="JSONB"/>
+            <column name="default_locale" type="VARCHAR(255)" defaultValue="en"/>
+            <column name="is_active" type="BOOLEAN" defaultValue="true"/>
+            <column name="version" type="INT" defaultValue="1"/>
+            <!-- Auditable fields -->
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <createIndex tableName="notification_templates" indexName="idx_templates_name_active">
+            <column name="name"/>
+            <column name="is_active"/>
+        </createIndex>
+
+        <createIndex tableName="notification_templates" indexName="idx_templates_channel">
+            <column name="channel"/>
+        </createIndex>
+
+        <createIndex tableName="notification_templates" indexName="idx_templates_path">
+            <column name="template_path"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
+

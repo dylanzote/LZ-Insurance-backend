@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="seed-welcome-customer-template" author="system">
+        <comment>Seed Welcome Customer Template - filesystem-based</comment>
+        
+        <!-- Insert Welcome Customer Template Metadata -->
+        <insert tableName="notification_templates">
+            <column name="id" value="welcome-customer"/>
+            <column name="name" value="Welcome Email - Customer"/>
+            <column name="description" value="Welcome email for customer users with bilingual support (EN/FR)"/>
+            <column name="channel" value="EMAIL"/>
+            <column name="template_path" value="email/welcome-customer"/>
+            <column name="subject_template" value="Welcome to LZ Insurance!"/>
+            <column name="body_template" value="Welcome {{firstName}}! Your account has been successfully created."/>
+            <column name="variables_schema" value='{"firstName": {"type": "string", "required": true}, "lastName": {"type": "string", "required": false}, "email": {"type": "string", "required": true}, "userId": {"type": "string", "required": true}, "phoneNumber": {"type": "string", "required": false}, "branchId": {"type": "string", "required": false}, "department": {"type": "string", "required": false}, "companyName": {"type": "string", "required": false}, "supportEmail": {"type": "string", "required": false}, "currentYear": {"type": "number", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+
+        <!-- English Translation -->
+        <insert tableName="template_translations">
+            <column name="id" value="welcome-customer-en"/>
+            <column name="template_id" value="welcome-customer"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value="Welcome to LZ Insurance - Your Account is Ready!"/>
+            <column name="body" value="Hello {{firstName}}, Welcome to LZ Insurance! Your account has been successfully created."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+
+        <!-- French Translation -->
+        <insert tableName="template_translations">
+            <column name="id" value="welcome-customer-fr"/>
+            <column name="template_id" value="welcome-customer"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value="Bienvenue chez LZ Insurance - Votre Compte est Prêt !"/>
+            <column name="body" value="Bonjour {{firstName}}, Bienvenue chez LZ Insurance ! Votre compte a été créé avec succès."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="seed-welcome-system-user-template" author="system">
+        <comment>Seed Welcome System User Template - filesystem-based</comment>
+        
+        <!-- Insert Welcome System User Template Metadata -->
+        <insert tableName="notification_templates">
+            <column name="id" value="welcome-system-user"/>
+            <column name="name" value="Welcome Email - System User"/>
+            <column name="description" value="Welcome email for system users (admins, managers, agents, etc.) with bilingual support (EN/FR)"/>
+            <column name="channel" value="EMAIL"/>
+            <column name="template_path" value="email/welcome-system-user"/>
+            <column name="subject_template" value="LZ Insurance System Account Created"/>
+            <column name="body_template" value="Hello {{firstName}}, Your system account has been successfully created."/>
+            <column name="variables_schema" value='{"firstName": {"type": "string", "required": true}, "lastName": {"type": "string", "required": false}, "email": {"type": "string", "required": true}, "userId": {"type": "string", "required": true}, "department": {"type": "string", "required": false}, "branchId": {"type": "string", "required": false}, "phoneNumber": {"type": "string", "required": false}, "companyName": {"type": "string", "required": false}, "supportEmail": {"type": "string", "required": false}, "currentYear": {"type": "number", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+
+        <!-- English Translation -->
+        <insert tableName="template_translations">
+            <column name="id" value="welcome-system-user-en"/>
+            <column name="template_id" value="welcome-system-user"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value="LZ Insurance System Account Created"/>
+            <column name="body" value="Hello {{firstName}}, Your account has been successfully created in the LZ Insurance system."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+
+        <!-- French Translation -->
+        <insert tableName="template_translations">
+            <column name="id" value="welcome-system-user-fr"/>
+            <column name="template_id" value="welcome-system-user"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value="Compte Système LZ Insurance Créé"/>
+            <column name="body" value="Bonjour {{firstName}}, Votre compte a été créé avec succès dans le système LZ Insurance."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="seed-admin-created-user-template" author="system">
+        <comment>Seed Admin Created User Template - filesystem-based with password reset</comment>
+        
+        <!-- Insert Admin Created User Template Metadata -->
+        <insert tableName="notification_templates">
+            <column name="id" value="admin-created-user"/>
+            <column name="name" value="Admin Created User - Password Setup"/>
+            <column name="description" value="Welcome email for admin-created users with password reset link (bilingual EN/FR)"/>
+            <column name="channel" value="EMAIL"/>
+            <column name="template_path" value="email/admin-created-user"/>
+            <column name="subject_template" value="Your LZ Insurance Account - Set Your Password"/>
+            <column name="body_template" value="Hello {{firstName}}, An administrator has created an account for you. Please set your password using the link provided."/>
+            <column name="variables_schema" value='{"firstName": {"type": "string", "required": true}, "lastName": {"type": "string", "required": false}, "email": {"type": "string", "required": true}, "userId": {"type": "string", "required": true}, "passwordResetUrl": {"type": "string", "required": true}, "tokenExpiryHours": {"type": "number", "required": true}, "supportEmail": {"type": "string", "required": false}, "privacyPolicyUrl": {"type": "string", "required": false}, "termsUrl": {"type": "string", "required": false}, "department": {"type": "string", "required": false}, "branchId": {"type": "string", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+
+        <!-- English Translation -->
+        <insert tableName="template_translations">
+            <column name="id" value="admin-created-user-en"/>
+            <column name="template_id" value="admin-created-user"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value="Your LZ Insurance Account - Set Your Password"/>
+            <column name="body" value="Hello {{firstName}}, An administrator has created an account for you on the LZ Insurance management platform. Please click the link to set your password and activate your account."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+
+        <!-- French Translation -->
+        <insert tableName="template_translations">
+            <column name="id" value="admin-created-user-fr"/>
+            <column name="template_id" value="admin-created-user"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value="Votre Compte LZ Insurance - Définissez Votre Mot de Passe"/>
+            <column name="body" value="Bonjour {{firstName}}, Un administrateur a créé un compte pour vous sur la plateforme de gestion LZ Insurance. Veuillez cliquer sur le lien pour définir votre mot de passe et activer votre compte."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <!-- Seed Password Changed Notification Template -->
+    <changeSet id="seed-password-changed-template" author="system">
+        <comment>Seed Password Changed Template - filesystem-based, bilingual EN/FR</comment>
+        <insert tableName="notification_templates">
+            <column name="id" value="password-changed"/>
+            <column name="name" value="Password Changed Security Alert"/>
+            <column name="description" value="Security alert sent when a user's password is changed, with bilingual support (EN/FR)"/>
+            <column name="channel" value="EMAIL"/>
+            <column name="template_path" value="email/password-changed"/>
+            <column name="subject_template" value="Password Changed - Security Alert"/>
+            <column name="body_template" value="Hello {{firstName}}, Your password has been changed successfully."/>
+            <column name="variables_schema" value='{"firstName": {"type": "string", "required": true}, "email": {"type": "string", "required": true}, "changedAt": {"type": "string", "required": false}, "changedBy": {"type": "string", "required": false}, "ipAddress": {"type": "string", "required": false}, "accountUrl": {"type": "string", "required": true}, "supportEmail": {"type": "string", "required": false}, "privacyUrl": {"type": "string", "required": false}, "termsUrl": {"type": "string", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="password-changed-en"/>
+            <column name="template_id" value="password-changed"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value="Password Changed - Security Alert | LZ Insurance"/>
+            <column name="body" value="Hello {{firstName}}, We're writing to inform you that your account password has been successfully changed. If you did not make this change, please contact support immediately."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="password-changed-fr"/>
+            <column name="template_id" value="password-changed"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value="Mot de Passe Modifié - Alerte de Sécurité | LZ Insurance"/>
+            <column name="body" value="Bonjour {{firstName}}, Nous vous informons que le mot de passe de votre compte a été modifié avec succès. Si vous n'avez pas effectué cette modification, veuillez contacter le support immédiatement."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <!-- Seed User Activated Notification Template -->
+    <changeSet id="seed-user-activated-template" author="system">
+        <comment>Seed User Activated Template - filesystem-based, bilingual EN/FR</comment>
+        <insert tableName="notification_templates">
+            <column name="id" value="user-activated"/>
+            <column name="name" value="User Account Activated"/>
+            <column name="description" value="Notification sent when an administrator activates a user's account, with bilingual support (EN/FR)"/>
+            <column name="channel" value="EMAIL"/>
+            <column name="template_path" value="email/user-activated"/>
+            <column name="subject_template" value="Account Activated - Welcome Back!"/>
+            <column name="body_template" value="Hello {{firstName}}, Your account has been successfully activated."/>
+            <column name="variables_schema" value='{"firstName": {"type": "string", "required": true}, "email": {"type": "string", "required": true}, "accountUrl": {"type": "string", "required": true}, "supportEmail": {"type": "string", "required": false}, "privacyUrl": {"type": "string", "required": false}, "termsUrl": {"type": "string", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="user-activated-en"/>
+            <column name="template_id" value="user-activated"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value="Account Activated - Welcome Back! | LZ Insurance"/>
+            <column name="body" value="Hello {{firstName}}, We're pleased to inform you that your account has been successfully activated. You can now access all our services and features."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="user-activated-fr"/>
+            <column name="template_id" value="user-activated"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value="Compte Activé - Bienvenue de Retour ! | LZ Insurance"/>
+            <column name="body" value="Bonjour {{firstName}}, Nous sommes heureux de vous informer que votre compte a été activé avec succès. Vous pouvez désormais accéder à tous nos services et fonctionnalités."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <!-- Seed User Suspended Notification Template -->
+    <changeSet id="seed-user-suspended-template" author="system">
+        <comment>Seed User Suspended Template - filesystem-based, bilingual EN/FR</comment>
+        <insert tableName="notification_templates">
+            <column name="id" value="user-suspended"/>
+            <column name="name" value="User Account Suspended"/>
+            <column name="description" value="Notification sent when an administrator suspends a user's account, with bilingual support (EN/FR)"/>
+            <column name="channel" value="EMAIL"/>
+            <column name="template_path" value="email/user-suspended"/>
+            <column name="subject_template" value="Account Suspended - Action Required"/>
+            <column name="body_template" value="Hello {{firstName}}, Your account has been suspended."/>
+            <column name="variables_schema" value='{"firstName": {"type": "string", "required": true}, "email": {"type": "string", "required": true}, "reason": {"type": "string", "required": false}, "supportEmail": {"type": "string", "required": false}, "privacyUrl": {"type": "string", "required": false}, "termsUrl": {"type": "string", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="user-suspended-en"/>
+            <column name="template_id" value="user-suspended"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value="Account Suspended - Action Required | LZ Insurance"/>
+            <column name="body" value="Hello {{firstName}}, Your account has been suspended. Please contact our support team for more information and assistance."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="user-suspended-fr"/>
+            <column name="template_id" value="user-suspended"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value="Compte Suspendu - Action Requise | LZ Insurance"/>
+            <column name="body" value="Bonjour {{firstName}}, Votre compte a été suspendu. Veuillez contacter notre équipe de support pour plus d'informations et d'assistance."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <!-- Seed Failed Login Notification Template -->
+    <changeSet id="seed-failed-login-template" author="system">
+        <comment>Seed Failed Login Template - security alert for suspicious login activity</comment>
+        <insert tableName="notification_templates">
+            <column name="id" value="failed-login"/>
+            <column name="name" value="Failed Login Security Alert"/>
+            <column name="description" value="Security alert sent after multiple failed login attempts (3+), bilingual EN/FR"/>
+            <column name="channel" value="EMAIL"/>
+            <column name="template_path" value="email/failed-login"/>
+            <column name="subject_template" value="Suspicious Login Activity Detected"/>
+            <column name="body_template" value="We detected {{failedAttempts}} failed login attempts on your account."/>
+            <column name="variables_schema" value='{"firstName": {"type": "string", "required": true}, "email": {"type": "string", "required": true}, "failedAttempts": {"type": "number", "required": true}, "attemptedAt": {"type": "string", "required": false}, "ipAddress": {"type": "string", "required": false}, "changePasswordUrl": {"type": "string", "required": true}, "supportEmail": {"type": "string", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="failed-login-en"/>
+            <column name="template_id" value="failed-login"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value="⚠️ Suspicious Login Activity Detected | LZ Insurance"/>
+            <column name="body" value="We detected {{failedAttempts}} failed login attempts on your account. If this wasn't you, change your password immediately."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="failed-login-fr"/>
+            <column name="template_id" value="failed-login"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value="⚠️ Activité de Connexion Suspecte Détectée | LZ Insurance"/>
+            <column name="body" value="Nous avons détecté {{failedAttempts}} tentatives de connexion infructueuses sur votre compte. Si ce n'était pas vous, changez immédiatement votre mot de passe."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <!-- Seed Account Locked Notification Template -->
+    <changeSet id="seed-account-locked-template" author="system">
+        <comment>Seed Account Locked Template - sent when account is locked due to failed login attempts</comment>
+        <insert tableName="notification_templates">
+            <column name="id" value="account-locked"/>
+            <column name="name" value="Account Locked Security Alert"/>
+            <column name="description" value="Alert sent when account is locked after too many failed login attempts (5+), bilingual EN/FR"/>
+            <column name="channel" value="EMAIL"/>
+            <column name="template_path" value="email/account-locked"/>
+            <column name="subject_template" value="Account Locked - Security Protection Activated"/>
+            <column name="body_template" value="Your account has been locked after {{failedAttempts}} failed login attempts."/>
+            <column name="variables_schema" value='{"firstName": {"type": "string", "required": true}, "email": {"type": "string", "required": true}, "failedAttempts": {"type": "number", "required": true}, "lockedAt": {"type": "string", "required": false}, "unlockAt": {"type": "string", "required": false}, "ipAddress": {"type": "string", "required": false}, "unlockUrl": {"type": "string", "required": true}, "supportEmail": {"type": "string", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="account-locked-en"/>
+            <column name="template_id" value="account-locked"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value="🔒 Account Locked - Security Protection | LZ Insurance"/>
+            <column name="body" value="Your account has been temporarily locked after {{failedAttempts}} failed login attempts. Click the link to unlock or wait 1 hour."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="account-locked-fr"/>
+            <column name="template_id" value="account-locked"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value="🔒 Compte Verrouillé - Protection de Sécurité | LZ Insurance"/>
+            <column name="body" value="Votre compte a été temporairement verrouillé après {{failedAttempts}} tentatives de connexion infructueuses. Cliquez sur le lien pour déverrouiller ou attendez 1 heure."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <!-- Seed Two-Factor Authentication Code Email Template -->
+    <changeSet id="seed-two-factor-code-email-template" author="system">
+        <comment>Seed Two-Factor Code Email Template - filesystem-based, bilingual EN/FR</comment>
+        <insert tableName="notification_templates">
+            <column name="id" value="two-factor-code-email"/>
+            <column name="name" value="Two-Factor Authentication Code - Email"/>
+            <column name="description" value="Verification code sent via email for 2FA setup, bilingual EN/FR"/>
+            <column name="channel" value="EMAIL"/>
+            <column name="template_path" value="email/two-factor-code-email"/>
+            <column name="subject_template" value="Two-Factor Authentication Code - LZ Insurance"/>
+            <column name="body_template" value="Your verification code is {{verificationCode}}. This code expires in {{expiresInMinutes}} minutes."/>
+            <column name="variables_schema" value='{"firstName": {"type": "string", "required": true}, "email": {"type": "string", "required": true}, "userId": {"type": "string", "required": true}, "verificationCode": {"type": "string", "required": true}, "expiresInMinutes": {"type": "number", "required": true}, "expirationMessage": {"type": "string", "required": false}, "method": {"type": "string", "required": false}, "supportEmail": {"type": "string", "required": false}, "privacyUrl": {"type": "string", "required": false}, "termsUrl": {"type": "string", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="two-factor-code-email-en"/>
+            <column name="template_id" value="two-factor-code-email"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value="🔐 Two-Factor Authentication Code - LZ Insurance"/>
+            <column name="body" value="Your verification code is {{verificationCode}}. This code expires in {{expiresInMinutes}} minutes. Never share this code with anyone."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="two-factor-code-email-fr"/>
+            <column name="template_id" value="two-factor-code-email"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value="🔐 Code d'Authentification à Deux Facteurs - LZ Insurance"/>
+            <column name="body" value="Votre code de vérification est {{verificationCode}}. Ce code expire dans {{expiresInMinutes}} minutes. Ne partagez jamais ce code avec personne."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <!-- Seed Two-Factor Authentication Code SMS Template -->
+    <changeSet id="seed-two-factor-code-sms-template" author="system">
+        <comment>Seed Two-Factor Code SMS Template - plain text for SMS channel</comment>
+        <insert tableName="notification_templates">
+            <column name="id" value="two-factor-code-sms"/>
+            <column name="name" value="Two-Factor Authentication Code - SMS"/>
+            <column name="description" value="Verification code sent via SMS for 2FA setup, plain text"/>
+            <column name="channel" value="SMS"/>
+            <column name="template_path" value=""/>
+            <column name="subject_template" value=""/>
+            <column name="body_template" value="LZ Insurance: Your verification code is {{verificationCode}}. Valid for {{expiresInMinutes}} minutes. Do not share this code."/>
+            <column name="variables_schema" value='{"verificationCode": {"type": "string", "required": true}, "expiresInMinutes": {"type": "number", "required": true}, "firstName": {"type": "string", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="two-factor-code-sms-en"/>
+            <column name="template_id" value="two-factor-code-sms"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value=""/>
+            <column name="body" value="LZ Insurance: Your verification code is {{verificationCode}}. Valid for {{expiresInMinutes}} minutes. Do not share this code."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="two-factor-code-sms-fr"/>
+            <column name="template_id" value="two-factor-code-sms"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value=""/>
+            <column name="body" value="LZ Insurance: Votre code de vérification est {{verificationCode}}. Valide pendant {{expiresInMinutes}} minutes. Ne partagez pas ce code."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <!-- Seed Password Reset Request Email Template -->
+    <changeSet id="seed-password-reset-request-template" author="system">
+        <comment>Seed Password Reset Request Email Template - filesystem-based, bilingual EN/FR</comment>
+        <insert tableName="notification_templates">
+            <column name="id" value="password-reset-request"/>
+            <column name="name" value="Password Reset Request - Email"/>
+            <column name="description" value="Password reset email sent when user requests password reset, bilingual EN/FR"/>
+            <column name="channel" value="EMAIL"/>
+            <column name="template_path" value="email/password-reset-request"/>
+            <column name="subject_template" value="Password Reset Request - LZ Insurance"/>
+            <column name="body_template" value="You have requested to reset your password. Click the link to reset: {{passwordResetUrl}}"/>
+            <column name="variables_schema" value='{"firstName": {"type": "string", "required": true}, "lastName": {"type": "string", "required": false}, "email": {"type": "string", "required": true}, "userId": {"type": "string", "required": true}, "passwordResetUrl": {"type": "string", "required": true}, "passwordResetToken": {"type": "string", "required": false}, "tokenExpiryHours": {"type": "number", "required": true}, "supportEmail": {"type": "string", "required": false}, "privacyUrl": {"type": "string", "required": false}, "termsUrl": {"type": "string", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="password-reset-request-en"/>
+            <column name="template_id" value="password-reset-request"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value="🔐 Password Reset Request - LZ Insurance"/>
+            <column name="body" value="Hello {{firstName}}, You have requested to reset your password. Click the link to reset: {{passwordResetUrl}}. This link is valid for {{tokenExpiryHours}} hours."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="password-reset-request-fr"/>
+            <column name="template_id" value="password-reset-request"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value="🔐 Demande de Réinitialisation de Mot de Passe - LZ Insurance"/>
+            <column name="body" value="Bonjour {{firstName}}, Vous avez demandé à réinitialiser votre mot de passe. Cliquez sur le lien pour réinitialiser : {{passwordResetUrl}}. Ce lien est valide pendant {{tokenExpiryHours}} heures."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <!-- Seed Email Verification Request Email Template -->
+    <changeSet id="seed-email-verification-request-template" author="system">
+        <comment>Seed Email Verification Request Email Template - filesystem-based, bilingual EN/FR</comment>
+        <insert tableName="notification_templates">
+            <column name="id" value="email-verification-request"/>
+            <column name="name" value="Email Verification Request - Email"/>
+            <column name="description" value="Email verification email sent when user requests email verification, bilingual EN/FR"/>
+            <column name="channel" value="EMAIL"/>
+            <column name="template_path" value="email/email-verification-request"/>
+            <column name="subject_template" value="Email Verification - LZ Insurance"/>
+            <column name="body_template" value="Please verify your email address by clicking the link: {{emailVerificationUrl}}"/>
+            <column name="variables_schema" value='{"firstName": {"type": "string", "required": true}, "lastName": {"type": "string", "required": false}, "email": {"type": "string", "required": true}, "userId": {"type": "string", "required": true}, "emailVerificationUrl": {"type": "string", "required": true}, "verificationToken": {"type": "string", "required": false}, "tokenExpiryHours": {"type": "number", "required": true}, "supportEmail": {"type": "string", "required": false}, "privacyUrl": {"type": "string", "required": false}, "termsUrl": {"type": "string", "required": false}}'/>
+            <column name="default_locale" value="en"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="version" valueNumeric="1"/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="email-verification-request-en"/>
+            <column name="template_id" value="email-verification-request"/>
+            <column name="locale" value="en"/>
+            <column name="subject" value="✉️ Email Verification - LZ Insurance"/>
+            <column name="body" value="Hello {{firstName}}, Thank you for signing up! Please verify your email address by clicking the link: {{emailVerificationUrl}}. This link is valid for {{tokenExpiryHours}} hours."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="template_translations">
+            <column name="id" value="email-verification-request-fr"/>
+            <column name="template_id" value="email-verification-request"/>
+            <column name="locale" value="fr"/>
+            <column name="subject" value="✉️ Vérification d'Email - LZ Insurance"/>
+            <column name="body" value="Bonjour {{firstName}}, Merci de vous être inscrit ! Veuillez vérifier votre adresse email en cliquant sur le lien : {{emailVerificationUrl}}. Ce lien est valide pendant {{tokenExpiryHours}} heures."/>
+            <column name="created_by" value="SYSTEM"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
+

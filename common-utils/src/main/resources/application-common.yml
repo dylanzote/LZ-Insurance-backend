@@ -1,0 +1,36 @@
+minio:
+  object:
+    bucket-name: default
+    url: http://localhost:9002
+    access-key: UUqjms6JBgkHoepkR1No
+    secret-key: jHpUox5rZtKRONPSUyNW7yA8lHuJF6i9TcX7j4T1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+
+logging:
+  level:
+    org.springdoc: DEBUG
+
+
+#minio:
+#  object:
+#    bucket-name: ${MINIO_BUCKET_NAME:default}
+#    url: ${MINIO_OBJECT_URL:http://localhost:9000}
+#    access-key: ${MINIO_ACCESS_KEY:UUqjms6JBgkHoepkR1No}
+#    secret-key: ${MINIO_SECRET_KEY:jHpUox5rZtKRONPSUyNW7yA8lHuJF6i9TcX7j4T1}
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://localhost:8761/eureka}
+#  instance:
+#    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
+#
+#logging:
+#  level:
+#    org.springdoc: DEBUG

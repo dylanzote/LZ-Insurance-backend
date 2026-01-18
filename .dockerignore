@@ -1,0 +1,15 @@
+target/
+.git/
+.gitignore
+.idea/
+*.iml
+*.ipr
+*.iws
+node_modules/
+.vscode/
+*.log
+.DS_Store
+property-service/
+
+
+

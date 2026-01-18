@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Insert Default Permissions -->
+    <changeSet id="1734400000_insertDefaultPermissions" author="system">
+        <insert tableName="permissions">
+            <column name="id" value="perm-user-read"/>
+            <column name="name" value="USER_READ"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="permissions">
+            <column name="id" value="perm-user-write"/>
+            <column name="name" value="USER_WRITE"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="permissions">
+            <column name="id" value="perm-user-delete"/>
+            <column name="name" value="USER_DELETE"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="permissions">
+            <column name="id" value="perm-role-manage"/>
+            <column name="name" value="ROLE_MANAGE"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="permissions">
+            <column name="id" value="perm-policy-read"/>
+            <column name="name" value="POLICY_READ"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="permissions">
+            <column name="id" value="perm-policy-write"/>
+            <column name="name" value="POLICY_WRITE"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="permissions">
+            <column name="id" value="perm-claim-read"/>
+            <column name="name" value="CLAIM_READ"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="permissions">
+            <column name="id" value="perm-claim-write"/>
+            <column name="name" value="CLAIM_WRITE"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="permissions">
+            <column name="id" value="perm-claim-approve"/>
+            <column name="name" value="CLAIM_APPROVE"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert tableName="permissions">
+            <column name="id" value="perm-report-view"/>
+            <column name="name" value="REPORT_VIEW"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert Default Roles -->
+    <changeSet id="1734400001_insertDefaultRoles" author="system">
+        <!-- CUSTOMER Role -->
+        <insert tableName="roles">
+            <column name="id" value="role-customer"/>
+            <column name="name" value="CUSTOMER"/>
+            <column name="description" value="Insurance customer"/>
+            <column name="is_customer_role" valueBoolean="true"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        
+        <!-- ADMIN Role -->
+        <insert tableName="roles">
+            <column name="id" value="role-admin"/>
+            <column name="name" value="ADMIN"/>
+            <column name="description" value="System administrator with full access"/>
+            <column name="is_customer_role" valueBoolean="false"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        
+        <!-- MANAGER Role -->
+        <insert tableName="roles">
+            <column name="id" value="role-manager"/>
+            <column name="name" value="MANAGER"/>
+            <column name="description" value="Insurance manager"/>
+            <column name="is_customer_role" valueBoolean="false"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        
+        <!-- AGENT Role -->
+        <insert tableName="roles">
+            <column name="id" value="role-agent"/>
+            <column name="name" value="AGENT"/>
+            <column name="description" value="Insurance agent"/>
+            <column name="is_customer_role" valueBoolean="false"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        
+        <!-- SUPERVISOR Role -->
+        <insert tableName="roles">
+            <column name="id" value="role-supervisor"/>
+            <column name="name" value="SUPERVISOR"/>
+            <column name="description" value="Department supervisor"/>
+            <column name="is_customer_role" valueBoolean="false"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        
+        <!-- UNDERWRITER Role -->
+        <insert tableName="roles">
+            <column name="id" value="role-underwriter"/>
+            <column name="name" value="UNDERWRITER"/>
+            <column name="description" value="Insurance underwriter"/>
+            <column name="is_customer_role" valueBoolean="false"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        
+        <!-- CLAIMS_ADJUSTER Role -->
+        <insert tableName="roles">
+            <column name="id" value="role-claims-adjuster"/>
+            <column name="name" value="CLAIMS_ADJUSTER"/>
+            <column name="description" value="Claims adjuster"/>
+            <column name="is_customer_role" valueBoolean="false"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        
+        <!-- SUPPORT Role -->
+        <insert tableName="roles">
+            <column name="id" value="role-support"/>
+            <column name="name" value="SUPPORT"/>
+            <column name="description" value="Customer support"/>
+            <column name="is_customer_role" valueBoolean="false"/>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+    <!-- Assign Permissions to Roles -->
+    <changeSet id="1734400002_assignPermissionsToRoles" author="system">
+        <!-- CUSTOMER permissions -->
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-customer"/>
+            <column name="permission_id" value="perm-policy-read"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-customer"/>
+            <column name="permission_id" value="perm-claim-read"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-customer"/>
+            <column name="permission_id" value="perm-claim-write"/>
+        </insert>
+        
+        <!-- ADMIN permissions (all) -->
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-admin"/>
+            <column name="permission_id" value="perm-user-read"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-admin"/>
+            <column name="permission_id" value="perm-user-write"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-admin"/>
+            <column name="permission_id" value="perm-user-delete"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-admin"/>
+            <column name="permission_id" value="perm-role-manage"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-admin"/>
+            <column name="permission_id" value="perm-policy-read"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-admin"/>
+            <column name="permission_id" value="perm-policy-write"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-admin"/>
+            <column name="permission_id" value="perm-claim-read"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-admin"/>
+            <column name="permission_id" value="perm-claim-write"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-admin"/>
+            <column name="permission_id" value="perm-claim-approve"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-admin"/>
+            <column name="permission_id" value="perm-report-view"/>
+        </insert>
+        
+        <!-- MANAGER permissions -->
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-manager"/>
+            <column name="permission_id" value="perm-user-read"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-manager"/>
+            <column name="permission_id" value="perm-policy-read"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-manager"/>
+            <column name="permission_id" value="perm-policy-write"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-manager"/>
+            <column name="permission_id" value="perm-claim-read"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-manager"/>
+            <column name="permission_id" value="perm-claim-approve"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-manager"/>
+            <column name="permission_id" value="perm-report-view"/>
+        </insert>
+        
+        <!-- AGENT permissions -->
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-agent"/>
+            <column name="permission_id" value="perm-policy-read"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-agent"/>
+            <column name="permission_id" value="perm-policy-write"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-agent"/>
+            <column name="permission_id" value="perm-claim-read"/>
+        </insert>
+        
+        <!-- CLAIMS_ADJUSTER permissions -->
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-claims-adjuster"/>
+            <column name="permission_id" value="perm-claim-read"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-claims-adjuster"/>
+            <column name="permission_id" value="perm-claim-write"/>
+        </insert>
+        <insert tableName="role_permissions">
+            <column name="role_id" value="role-claims-adjuster"/>
+            <column name="permission_id" value="perm-claim-approve"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
+

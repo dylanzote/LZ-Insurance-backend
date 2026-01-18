@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1722579001_create_provider_health_metrics" author="Dylan Zote">
+
+        <createTable tableName="provider_health_metrics">
+
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="provider_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="timestamp" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="success_count" type="int"/>
+
+            <column name="failure_count" type="int"/>
+
+            <column name="total_requests" type="int"/>
+
+            <column name="average_latency_ms" type="int"/>
+
+            <column name="error_rate_percent" type="double"/>
+
+            <column name="circuit_state" type="varchar(50)"/>
+
+            <column name="last_success_at" type="timestamp"/>
+
+            <column name="last_failure_at" type="timestamp"/>
+
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="updated_at" type="timestamp"/>
+
+        </createTable>
+
+        <!-- Indexes -->
+        <createIndex indexName="idx_provider_metrics_provider_time"
+                     tableName="provider_health_metrics">
+            <column name="provider_id"/>
+            <column name="timestamp"/>
+        </createIndex>
+
+        <createIndex indexName="idx_provider_metrics_circuit_state"
+                     tableName="provider_health_metrics">
+            <column name="circuit_state"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="provider_health_metrics"
+                                 baseColumnNames="provider_id"
+                                 constraintName="fk_provider_health_metrics_provider"
+                                 referencedTableName="notification_providers"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+    </changeSet>
+</databaseChangeLog>

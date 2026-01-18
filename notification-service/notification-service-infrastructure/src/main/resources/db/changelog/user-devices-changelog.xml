@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1722581001_create_user_devices" author="Dylan_Zote">
+
+        <createTable tableName="user_devices">
+
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="user_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="device_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="platform" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="platform_version" type="varchar(50)"/>
+
+            <column name="app_version" type="varchar(50)"/>
+
+            <column name="push_token" type="text">
+                <constraints unique="true"/>
+            </column>
+
+            <column name="fcm_token" type="text"/>
+
+            <column name="apns_token" type="text"/>
+
+            <column name="is_expo" type="boolean" defaultValue="false"/>
+
+            <column name="device_model" type="varchar(100)"/>
+
+            <column name="device_language" type="varchar(10)"/>
+
+            <column name="is_active" type="boolean" defaultValue="true"/>
+
+            <column name="last_seen_at" type="timestamp"/>
+
+            <column name="subscribed_topics" type="jsonb"/>
+
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+        </createTable>
+
+        <!-- Indexes -->
+        <createIndex indexName="idx_user_devices_user_active"
+                     tableName="user_devices">
+            <column name="user_id"/>
+            <column name="is_active"/>
+        </createIndex>
+
+        <createIndex indexName="idx_user_devices_device"
+                     tableName="user_devices">
+            <column name="device_id"/>
+            <column name="platform"/>
+        </createIndex>
+
+        <createIndex indexName="idx_user_devices_last_seen"
+                     tableName="user_devices">
+            <column name="last_seen_at"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>

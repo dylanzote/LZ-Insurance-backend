@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .language-section {
+            border-bottom: 3px solid #f0f0f0;
+            padding: 40px 30px;
+        }
+        .language-section:last-child {
+            border-bottom: none;
+        }
+        .language-label {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .greeting {
+            font-size: 20px;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .message {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        .info-box strong {
+            color: #667eea;
+        }
+        .features {
+            margin: 30px 0;
+        }
+        .feature-item {
+            margin: 15px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        .feature-item:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 30px 20px !important;
+            }
+            .header h1 {
+                font-size: 24px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>LZ Insurance</h1>
+        </div>
+
+        <!-- FRENCH VERSION (First) -->
+        <div class="language-section">
+            <span class="language-label">🇫🇷 FRANÇAIS</span>
+            
+            <div class="greeting">
+                Bonjour <span th:text="${firstName}">Prénom</span>,
+            </div>
+
+            <div class="message">
+                <p th:text="#{welcome.message_fr}">
+                    Nous sommes ravis de vous accueillir dans notre famille ! Votre compte a été créé avec succès 
+                    et vous faites maintenant partie d'une communauté qui valorise la confiance, la sécurité et la tranquillité d'esprit.
+                </p>
+            </div>
+
+            <!-- Account Info Box -->
+            <div class="info-box">
+                <p><strong th:text="#{welcome.accountInfo_fr}">Informations de votre compte :</strong></p>
+                <p>
+                    <strong th:text="#{welcome.email_fr}">Email :</strong> <span th:text="${email}">email@example.com</span><br/>
+                    <strong th:text="#{welcome.accountId_fr}">ID de compte :</strong> <span th:text="${userId}">USR-12345</span><br/>
+                    <span th:if="${branchId}">
+                        <strong th:text="#{welcome.branch_fr}">Agence :</strong> <span th:text="${branchId}">Nom de l'agence</span><br/>
+                    </span>
+                </p>
+            </div>
+
+            <!-- Features Section -->
+            <div class="features">
+                <p><strong th:text="#{welcome.featuresTitle_fr}">Ce que vous pouvez faire :</strong></p>
+                <div class="feature-item" th:text="#{welcome.feature1_fr}">
+                    Visualiser et gérer vos polices d'assurance
+                </div>
+                <div class="feature-item" th:text="#{welcome.feature2_fr}">
+                    Déposer et suivre vos réclamations facilement
+                </div>
+                <div class="feature-item" th:text="#{welcome.feature3_fr}">
+                    Accéder au support client 24h/24 et 7j/7
+                </div>
+                <div class="feature-item" th:text="#{welcome.feature4_fr}">
+                    Obtenir des recommandations d'assurance personnalisées
+                </div>
+            </div>
+
+            <!-- CTA Button -->
+            <div style="text-align: center;">
+                <a href="#" class="button" th:text="#{welcome.cta_fr}">Commencer</a>
+            </div>
+
+            <div class="message">
+                <p th:text="#{welcome.support_fr}">
+                    Si vous avez des questions, n'hésitez pas à contacter notre équipe d'assistance.
+                </p>
+            </div>
+
+            <div class="message">
+                <p th:text="#{welcome.closing_fr}">
+                    Cordialement,<br/>L'équipe LZ Insurance
+                </p>
+            </div>
+        </div>
+
+        <!-- ENGLISH VERSION (Second) -->
+        <div class="language-section">
+            <span class="language-label">🇬🇧 ENGLISH</span>
+            
+            <div class="greeting">
+                Hello <span th:text="${firstName}">First Name</span>,
+            </div>
+
+            <div class="message">
+                <p th:text="#{welcome.message_en}">
+                    We're thrilled to have you join our family! Your account has been successfully created, 
+                    and you're now part of a community that values trust, security, and peace of mind.
+                </p>
+            </div>
+
+            <!-- Account Info Box -->
+            <div class="info-box">
+                <p><strong th:text="#{welcome.accountInfo_en}">Your Account Information:</strong></p>
+                <p>
+                    <strong th:text="#{welcome.email_en}">Email:</strong> <span th:text="${email}">email@example.com</span><br/>
+                    <strong th:text="#{welcome.accountId_en}">Account ID:</strong> <span th:text="${userId}">USR-12345</span><br/>
+                    <span th:if="${branchId}">
+                        <strong th:text="#{welcome.branch_en}">Branch:</strong> <span th:text="${branchId}">Branch Name</span><br/>
+                    </span>
+                </p>
+            </div>
+
+            <!-- Features Section -->
+            <div class="features">
+                <p><strong th:text="#{welcome.featuresTitle_en}">What you can do:</strong></p>
+                <div class="feature-item" th:text="#{welcome.feature1_en}">
+                    View and manage your insurance policies
+                </div>
+                <div class="feature-item" th:text="#{welcome.feature2_en}">
+                    File and track claims easily
+                </div>
+                <div class="feature-item" th:text="#{welcome.feature3_en}">
+                    Access 24/7 customer support
+                </div>
+                <div class="feature-item" th:text="#{welcome.feature4_en}">
+                    Get personalized insurance recommendations
+                </div>
+            </div>
+
+            <!-- CTA Button -->
+            <div style="text-align: center;">
+                <a href="#" class="button" th:text="#{welcome.cta_en}">Get Started</a>
+            </div>
+
+            <div class="message">
+                <p th:text="#{welcome.support_en}">
+                    If you have any questions, feel free to reach out to our support team.
+                </p>
+            </div>
+
+            <div class="message">
+                <p th:text="#{welcome.closing_en}">
+                    Best regards,<br/>The LZ Insurance Team
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>
+                <span th:text="#{footer.facebook_en}">Facebook</span> | 
+                <span th:text="#{footer.twitter_en}">Twitter</span> | 
+                <span th:text="#{footer.linkedin_en}">LinkedIn</span>
+            </p>
+            <p th:text="#{footer.address_en}">LZ Insurance - Your trusted insurance partner</p>
+            <p>
+                <a href="#" th:text="#{footer.privacy_en}">Privacy Policy</a> | 
+                <a href="#" th:text="#{footer.terms_en}">Terms of Service</a>
+            </p>
+            <p style="font-size: 12px; color: #999;">
+                © <span th:text="${currentYear}">2024</span> <span th:text="${companyName}">LZ Insurance</span>. All rights reserved.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

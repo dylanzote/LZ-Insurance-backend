@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: template-service
+  profiles:
+    include: common, database-migration
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${SPRING_DATASOURCE_HOST:postgres-resourcebundle}:${SPRING_DATASOURCE_PORT:5432}/${SPRING_DATASOURCE_DB:resource-bundle}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 8083
+
+

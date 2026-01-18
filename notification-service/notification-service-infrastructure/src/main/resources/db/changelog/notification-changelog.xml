@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1765048271-create-notifications-table" author="Dylan_zote">
+        <createTable tableName="notifications">
+            <column name="id" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="correlation_id" type="VARCHAR(255)"/>
+            <column name="idempotency_key" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="channel" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="priority" type="VARCHAR(20)" defaultValue="MEDIUM"/>
+            <column name="status" type="VARCHAR(20)" defaultValue="PENDING"/>
+            <column name="provider" type="VARCHAR(50)"/>
+            <column name="provider_message_id" type="VARCHAR(255)"/>
+            <column name="metadata" type="JSONB"/>
+            <column name="template_variables" type="JSONB"/>
+            <column name="locale" type="VARCHAR(10)" defaultValue="en"/>
+            <column name="scheduled_at" type="TIMESTAMP"/>
+            <column name="sent_at" type="TIMESTAMP"/>
+            <column name="delivered_at" type="TIMESTAMP"/>
+            <column name="read_at" type="TIMESTAMP"/>
+            <column name="retry_count" type="INT" defaultValue="0"/>
+            <column name="max_retries" type="INT" defaultValue="3"/>
+            <column name="error_message" type="TEXT"/>
+            <column name="error_stack_trace" type="TEXT"/>
+            <!-- Auditable fields -->
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <createIndex tableName="notifications" indexName="idx_notifications_user_status">
+            <column name="user_id"/>
+            <column name="status"/>
+        </createIndex>
+
+        <createIndex tableName="notifications" indexName="idx_notifications_idempotency_key">
+            <column name="idempotency_key"/>
+        </createIndex>
+
+        <createIndex tableName="notifications" indexName="idx_notifications_scheduled_status">
+            <column name="scheduled_at"/>
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

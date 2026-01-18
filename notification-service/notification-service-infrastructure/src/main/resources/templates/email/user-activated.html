@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Activated - LZ Insurance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .lang-section {
+            margin-bottom: 35px;
+        }
+
+        .lang-label {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 14px;
+            color: #10b981;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .greeting {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .success-box {
+            background-color: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 6px;
+        }
+
+        .success-box p {
+            font-size: 15px;
+            color: #065f46;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .success-box strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background-color: #f0f4ff;
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 6px;
+        }
+
+        .info-box p {
+            font-size: 15px;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #4a5568;
+        }
+
+        .info-box li {
+            margin-bottom: 8px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white !important;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 20px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.5);
+        }
+
+        .support-section {
+            background-color: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+
+        .support-section h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .support-section p {
+            font-size: 14px;
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+
+        .support-section a {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .support-section a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+            margin: 30px 0;
+        }
+
+        .footer {
+            background-color: #2d3748;
+            color: #cbd5e0;
+            padding: 25px 30px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .footer p {
+            margin: 8px 0;
+        }
+
+        .footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media only screen and (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .greeting {
+                font-size: 18px;
+            }
+
+            .message {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <!-- Header -->
+    <div class="header">
+        <h1 th:text="#{activated.header}">Account Activated - LZ Insurance</h1>
+        <p th:text="#{activated.subheader}">Welcome Back!</p>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- French Section -->
+        <div class="lang-section">
+            <span class="lang-label">🇫🇷 FRANÇAIS</span>
+            <p class="greeting" th:text="#{activated.greeting_fr(${firstName})}">Bonjour,</p>
+            <p class="message" th:utext="#{activated.message_fr}">
+                Nous sommes heureux de vous informer que votre compte a été <strong>activé avec succès</strong>.
+            </p>
+
+            <!-- Success Box -->
+            <div class="success-box">
+                <p>
+                    <strong th:text="#{activated.success_title_fr}">✅ Votre compte est maintenant actif</strong>
+                    <span th:utext="#{activated.success_message_fr}">
+                        Vous pouvez désormais accéder à tous nos services et fonctionnalités.
+                    </span>
+                </p>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <p><strong th:text="#{activated.what_next_title_fr}">📋 Prochaines étapes</strong></p>
+                <ul>
+                    <li th:text="#{activated.step1_fr}">Connectez-vous à votre compte</li>
+                    <li th:text="#{activated.step2_fr}">Complétez votre profil si nécessaire</li>
+                    <li th:text="#{activated.step3_fr}">Explorez nos services et fonctionnalités</li>
+                    <li th:text="#{activated.step4_fr}">Contactez notre support si vous avez des questions</li>
+                </ul>
+            </div>
+
+            <!-- CTA Button -->
+            <div style="text-align: center;">
+                <a th:href="${accountUrl}" class="cta-button" th:text="#{activated.cta_button_fr}">
+                    🔐 Accéder à Mon Compte
+                </a>
+            </div>
+
+            <!-- Support Section -->
+            <div class="support-section">
+                <h4 th:text="#{activated.support_title_fr}">💬 Besoin d'Aide ?</h4>
+                <p th:utext="#{activated.support_message_fr}">
+                    Notre équipe de support est là pour vous aider.
+                </p>
+                <p>
+                    <strong th:text="#{activated.support_email_label_fr}">E-mail :</strong>
+                    <a th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}">support@lz-insurance.com</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- English Section -->
+        <div class="lang-section">
+            <span class="lang-label">🇬🇧 ENGLISH</span>
+            <p class="greeting" th:text="#{activated.greeting_en(${firstName})}">Hello,</p>
+            <p class="message" th:utext="#{activated.message_en}">
+                We're pleased to inform you that your account has been <strong>successfully activated</strong>.
+            </p>
+
+            <!-- Success Box -->
+            <div class="success-box">
+                <p>
+                    <strong th:text="#{activated.success_title_en}">✅ Your Account is Now Active</strong>
+                    <span th:utext="#{activated.success_message_en}">
+                        You can now access all our services and features.
+                    </span>
+                </p>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <p><strong th:text="#{activated.what_next_title_en}">📋 What's Next</strong></p>
+                <ul>
+                    <li th:text="#{activated.step1_en}">Log in to your account</li>
+                    <li th:text="#{activated.step2_en}">Complete your profile if needed</li>
+                    <li th:text="#{activated.step3_en}">Explore our services and features</li>
+                    <li th:text="#{activated.step4_en}">Contact our support if you have questions</li>
+                </ul>
+            </div>
+
+            <!-- CTA Button -->
+            <div style="text-align: center;">
+                <a th:href="${accountUrl}" class="cta-button" th:text="#{activated.cta_button_en}">
+                    🔐 Access My Account
+                </a>
+            </div>
+
+            <!-- Support Section -->
+            <div class="support-section">
+                <h4 th:text="#{activated.support_title_en}">💬 Need Help?</h4>
+                <p th:utext="#{activated.support_message_en}">
+                    Our support team is here to help you.
+                </p>
+                <p>
+                    <strong th:text="#{activated.support_email_label_en}">Email:</strong>
+                    <a th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}">support@lz-insurance.com</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p th:text="#{activated.footer_company}">LZ Insurance - Your Trusted Insurance Partner</p>
+        <p th:text="#{activated.footer_confidential}">This message is confidential.</p>
+        <p>
+            <a th:href="${privacyUrl}" th:text="#{activated.footer_privacy}">Privacy Policy</a> |
+            <a th:href="${termsUrl}" th:text="#{activated.footer_terms}">Terms of Service</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>
+

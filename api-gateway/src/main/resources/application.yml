@@ -1,0 +1,76 @@
+server:
+  port: 9090
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:4200"
+              - "http://localhost:4100"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+      routes:
+        - id: userservice_route
+          uri: ${registration.services.userservice.host}
+          predicates:
+            - Path= ${registration.services.userservice.path}
+          filters:
+            - RewritePath=/user-service(?<segment>/?.*), $\{segment}
+        - id: templateservice_route
+          uri: ${registration.services.templateservice.host}
+          predicates:
+            - Path= ${registration.services.templateservice.path}
+          filters:
+            - RewritePath=/template-service(?<segment>/?.*), $\{segment}
+        - id: discoveryserver_route
+          uri: ${registration.services.discoveryserver.host}
+          predicates:
+            - Path= ${registration.services.discoveryserver.path}
+          filters:
+            - SetPath=/
+        - id: discoveryserverstaticresource_route
+          uri: ${registration.services.discoveryserver.host}
+          predicates:
+            - Path= ${registration.services.discoveryserver.pathStatic}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/real-estate}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://localhost:8761/eureka}
+
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        cloud:
+          gateway: trace
+
+
+registration:
+  services:
+    userservice:
+      host: ${USER_SERVICE_HOST:http://localhost:8081/}
+      path: /user-service/**, /v3/api-docs, /swagger-ui.html, /v3/api-docs/swagger-config
+    templateservice:
+      host: ${TEMPLATE_SERVICE_HOST:http://localhost:8083/}
+      path: /template-service/**, /v3/api-docs, /swagger-ui.html, /v3/api-docs/swagger-config
+    discoveryserver:
+      host: ${DISCOVERY_SERVER_HOST:http://localhost:8761}
+      path: /eureka/web
+      pathStatic: /eureka/**

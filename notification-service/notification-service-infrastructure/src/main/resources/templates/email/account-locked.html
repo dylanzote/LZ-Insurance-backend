@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Locked - LZ Insurance</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; padding: 20px; line-height: 1.6; }
+        .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 40px 30px; text-align: center; }
+        .header h1 { font-size: 28px; margin-bottom: 10px; font-weight: 600; }
+        .header p { font-size: 16px; opacity: 0.95; }
+        .content { padding: 40px 30px; }
+        .lang-section { margin-bottom: 35px; }
+        .lang-label { display: inline-block; font-weight: 700; font-size: 14px; color: #dc2626; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .greeting { font-size: 20px; font-weight: 600; color: #2d3748; margin-bottom: 15px; }
+        .message { font-size: 16px; color: #4a5568; margin-bottom: 20px; line-height: 1.7; }
+        .alert-box { background-color: #fee2e2; border-left: 4px solid #dc2626; padding: 20px; margin: 25px 0; border-radius: 6px; }
+        .alert-box p { font-size: 15px; color: #7f1d1d; line-height: 1.6; margin: 0; }
+        .alert-box strong { display: block; margin-bottom: 8px; font-size: 16px; }
+        .info-box { background-color: #f0f4ff; border-left: 4px solid #dc2626; padding: 20px; margin: 25px 0; border-radius: 6px; }
+        .info-item { margin-bottom: 12px; }
+        .info-label { font-weight: 600; color: #2d3748; }
+        .cta-button { display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white !important; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 20px 0; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4); }
+        .steps-list { background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .steps-list h4 { color: #2d3748; margin-bottom: 12px; }
+        .steps-list ol { margin-left: 20px; }
+        .steps-list li { color: #4a5568; margin-bottom: 8px; }
+        .divider { height: 2px; background: linear-gradient(to right, transparent, #e2e8f0, transparent); margin: 30px 0; }
+        .footer { background-color: #2d3748; color: #cbd5e0; padding: 25px 30px; text-align: center; font-size: 13px; }
+        .footer p { margin: 8px 0; }
+        .footer a { color: #90cdf4; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="header">
+        <h1>🔒 Account Locked</h1>
+        <p>Security Protection Activated</p>
+    </div>
+    <div class="content">
+        <!-- French Section -->
+        <div class="lang-section">
+            <span class="lang-label">🇫🇷 FRANÇAIS</span>
+            <p class="greeting">Bonjour <span th:text="${firstName}"></span>,</p>
+            <p class="message">Votre compte a été temporairement verrouillé en raison de <strong><span th:text="${failedAttempts}"></span> tentatives de connexion infructueuses</strong>.</p>
+            
+            <div class="alert-box">
+                <p><strong>🛡️ Protection de Sécurité</strong><br/>
+                <span>Cette mesure protège votre compte contre les accès non autorisés.</span></p>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-item" th:if="${lockedUntil}">
+                    <span class="info-label">Verrouillé jusqu'à :</span> <span th:text="${lockedUntil}"></span>
+                </div>
+                <div class="info-item" th:if="${ipAddress}">
+                    <span class="info-label">Adresse IP :</span> <span th:text="${ipAddress}"></span>
+                </div>
+            </div>
+
+            <div class="steps-list">
+                <h4>📋 Comment Déverrouiller Votre Compte</h4>
+                <ol>
+                    <li>Attendez l'heure de déverrouillage automatique</li>
+                    <li>OU cliquez sur le bouton ci-dessous pour déverrouiller immédiatement</li>
+                    <li>Changez votre mot de passe après avoir retrouvé l'accès</li>
+                    <li>Contactez le support si ce n'était pas vous</li>
+                </ol>
+            </div>
+
+            <div style="text-align: center;">
+                <a th:href="${unlockUrl}" class="cta-button">🔓 Déverrouiller Mon Compte</a>
+            </div>
+
+            <p class="message" style="font-size: 14px; color: #6c757d; margin-top: 20px;">
+                <strong>Note :</strong> Ce lien est valable pour <strong>24 heures</strong>. Si le lien expire, contactez votre administrateur.
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- English Section -->
+        <div class="lang-section">
+            <span class="lang-label">🇬🇧 ENGLISH</span>
+            <p class="greeting">Hello <span th:text="${firstName}"></span>,</p>
+            <p class="message">Your account has been temporarily locked due to <strong><span th:text="${failedAttempts}"></span> failed login attempts</strong>.</p>
+            
+            <div class="alert-box">
+                <p><strong>🛡️ Security Protection</strong><br/>
+                <span>This measure protects your account from unauthorized access.</span></p>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-item" th:if="${lockedUntil}">
+                    <span class="info-label">Locked until:</span> <span th:text="${lockedUntil}"></span>
+                </div>
+                <div class="info-item" th:if="${ipAddress}">
+                    <span class="info-label">IP Address:</span> <span th:text="${ipAddress}"></span>
+                </div>
+            </div>
+
+            <div class="steps-list">
+                <h4>📋 How to Unlock Your Account</h4>
+                <ol>
+                    <li>Wait for automatic unlock time</li>
+                    <li>OR click the button below to unlock immediately</li>
+                    <li>Change your password after regaining access</li>
+                    <li>Contact support if this wasn't you</li>
+                </ol>
+            </div>
+
+            <div style="text-align: center;">
+                <a th:href="${unlockUrl}" class="cta-button">🔓 Unlock My Account</a>
+            </div>
+
+            <p class="message" style="font-size: 14px; color: #6c757d; margin-top: 20px;">
+                <strong>Note:</strong> This link is valid for <strong>24 hours</strong>. If the link expires, please contact your administrator.
+            </p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2024 LZ Insurance. All rights reserved.</p>
+        <p><a th:href="${supportEmail}">Contact Support</a></p>
+    </div>
+</div>
+</body>
+</html>

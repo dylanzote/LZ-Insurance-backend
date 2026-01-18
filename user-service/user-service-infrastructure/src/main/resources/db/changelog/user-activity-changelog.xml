@@ -1,0 +1,66 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1722569715_createUserActivity" author="Dylan Zote">
+        <createTable tableName="user_activities">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="activity_type" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="user_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(1000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="ip_address" type="varchar(45)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="device_info" type="varchar(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="action" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="resource" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="resource_id" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+            <!-- Auditable fields -->
+            <column name="created_by" type="varchar(255)"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="user_activities"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_user_activities_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+        <!-- Optional indexes for faster admin dashboard queries -->
+        <createIndex indexName="idx_user_activities_user" tableName="user_activities">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex indexName="idx_user_activities_activity_type" tableName="user_activities">
+            <column name="activity_type"/>
+        </createIndex>
+        <createIndex indexName="idx_user_activities_action" tableName="user_activities">
+            <column name="action"/>
+        </createIndex>
+        <createIndex indexName="idx_user_activities_resource" tableName="user_activities">
+            <column name="resource"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

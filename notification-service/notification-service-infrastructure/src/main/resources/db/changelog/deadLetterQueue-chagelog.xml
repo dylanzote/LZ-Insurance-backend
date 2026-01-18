@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1765048271-create-dlq-table" author="Dylan_zote">
+        <createTable tableName="dead_letter_queue">
+            <column name="id" type="VARCHAR(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="notification_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="provider_id" type="VARCHAR(255)"/>
+            <column name="error_type" type="VARCHAR(255)"/>
+            <column name="error_message" type="TEXT"/>
+            <column name="error_stack_trace" type="TEXT"/>
+            <column name="payload" type="JSONB"/>
+            <column name="retry_count" type="INT" defaultValue="0"/>
+            <column name="scheduled_retry_at" type="TIMESTAMP"/>
+            <column name="processed" type="BOOLEAN" defaultValue="false"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <createIndex tableName="dead_letter_queue" indexName="idx_dlq_retry_processed">
+            <column name="scheduled_retry_at"/>
+            <column name="processed"/>
+        </createIndex>
+
+        <createIndex tableName="dead_letter_queue" indexName="idx_dlq_notification">
+            <column name="notification_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

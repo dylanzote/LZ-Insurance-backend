@@ -1,0 +1,109 @@
+# ============================================================================
+# Kafka Configuration Profile
+# ============================================================================
+# To use Kafka in your service, include this profile in your application.yml:
+#
+#   spring:
+#     profiles:
+#       include: kafka
+#
+# Then configure Kafka-specific settings for your service.
+# ============================================================================
+
+spring:
+  kafka:
+    # Kafka Bootstrap Servers
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    
+    # ========================================================================
+    # Consumer Configuration (for services that consume Kafka messages)
+    # ========================================================================
+    consumer:
+      # Consumer group ID (override in each service)
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:${spring.application.name}-group}
+      
+      # Auto offset reset strategy
+      # - earliest: start from beginning if no offset found  
+      # - latest: start from latest messages only (prevents replays)
+      auto-offset-reset: latest
+      
+      # Manual commit mode for reliability
+      enable-auto-commit: false
+      
+      # Key and value deserializers
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      
+      # Consumer properties
+      properties:
+        # Trust all packages for JSON deserialization
+        spring.json.trusted.packages: "*"
+        # Default type for deserialization
+        spring.json.value.default.type: com.zote.kafka.adapter.models.DataEvent
+        # Maximum records per poll
+        max.poll.records: 10
+        # Session timeout
+        session.timeout.ms: 30000
+        # Heartbeat interval
+        heartbeat.interval.ms: 10000
+    
+    # ========================================================================
+    # Producer Configuration (for services that produce Kafka messages)
+    # ========================================================================
+    producer:
+      # Key and value serializers
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      
+      # Acknowledgment level - wait for all replicas (most reliable)
+      acks: all
+      
+      # Number of retries for failed sends
+      retries: 3
+      
+      # Producer properties
+      properties:
+        # Linger time (delay before sending batch)
+        linger.ms: 5
+        # Enable idempotence for exactly-once semantics
+        enable.idempotence: true
+    
+    # ========================================================================
+    # Listener Configuration (for @KafkaListener methods)
+    # ========================================================================
+    listener:
+      # Acknowledgment mode - manual (call ack.acknowledge() explicitly)
+      ack-mode: manual
+      
+      # Number of concurrent listener threads (single thread to avoid duplicates)
+      concurrency: 1
+      
+      # Listener type - process one record at a time
+      type: single
+
+# ============================================================================
+# Logging Configuration
+# ============================================================================
+logging:
+  level:
+    # Kafka client logging
+    org.apache.kafka: WARN
+    org.springframework.kafka: WARN
+
+# ============================================================================
+# Service-Specific Kafka Configuration
+# ============================================================================
+# Services can override specific settings and define their topics:
+#
+# Example:
+#   spring:
+#     profiles:
+#       include: kafka
+#     kafka:
+#       consumer:
+#         group-id: my-service-group
+#   
+#   my-service:
+#     kafka:
+#       topic: my-events
+# ============================================================================

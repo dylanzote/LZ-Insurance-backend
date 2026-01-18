@@ -1,0 +1,68 @@
+spring:
+  profiles:
+    include: common, keycloak, notification, kafka, redis
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/user-service
+    username: postgres
+    password: root
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  application:
+    name: user-service
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+app:
+  reset:
+    webBaseUrl: "https://your-frontend.com/auth/reset-password"
+    mobileBaseUrl: "myapp://reset-password"
+  
+  # Default Admin User Configuration
+  # This admin user is automatically created on first system startup if no admin exists
+  default-admin:
+    enabled: true                                    # Enable/disable automatic admin creation
+    firstName: Admin                                 # Admin first name
+    lastName: Admin                                  # Admin last name
+    userName: Admin                                  # Admin username (for login)
+    email: admin@lz-insurance.com                    # Admin email (CHANGE IN PRODUCTION!)
+    phoneNumber: "671539720"                         # Admin phone number
+    password: "Admin@2026!"                          # Default password (CHANGE IMMEDIATELY!)
+    gender: MALE                                    # Admin gender
+    language: EN                                     # Admin language preference (EN/FR)
+    dateOfBirth: "01/01/1990"                       # Admin date of birth (dd/MM/yyyy)
+    town: Headquarters                               # Admin town/city
+    address: Main Office                             # Admin address
+    department: Administration                       # Admin department
+    roleName: ADMIN                                  # Role name to assign (must exist in DB)
+
+server:
+  port: 8081
+
+# Kafka Configuration for Event Publishing
+user-service:
+  kafka:
+    topic: user-events
+
+
+#spring:
+#  profiles:
+#    include: common, keycloak, notification
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://${SPRING_DATASOURCE_HOST:postgres-user}:${SPRING_DATASOURCE_PORT:5432}/${SPRING_DATASOURCE_DB:user-service}
+#    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+#    password: ${SPRING_DATASOURCE_PASSWORD:root}
+#  liquibase:
+#    change-log: classpath:db/changelog/db.changelog-master.yaml
+#  application:
+#    name: user-service
+#  jpa:
+#    hibernate:
+#      ddl-auto: validate
+#
+#server:
+#  port: 8081
+
+

@@ -1,0 +1,204 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    include: common, keycloak, metrics, redis, kafka
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/notification-service
+    username: postgres
+    password: root
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  application:
+    name: notification-service
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  kafka:
+    consumer:
+      group-id: notification-service-group
+      auto-offset-reset: latest  # Only consume NEW messages (prevents replays)
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+      cache-null-values: false
+      key-prefix: notification
+
+notification:
+  kafka:
+    topic: ${NOTIFICATION_KAFKA_TOPIC:notification-events}
+    user-service-topic: ${USER_SERVICE_KAFKA_TOPIC:user-events}
+  retry:
+    max-retries: 3
+    base-delay-ms: 1000
+    max-delay-ms: 60000
+    backoff-multiplier: 2
+    interval: 30000
+
+  dlq:
+    max-retries: 5
+    retry-cron: "0 0 */6 * * *"
+
+  rate-limiting:
+    enabled: true
+    default-limit-per-minute: 100
+    default-limit-per-hour: 1000
+    bucket-capacity: 100
+    refill-rate: 100
+  
+  # Portal Configuration
+  admin-portal:
+    url: ${ADMIN_PORTAL_URL:http://localhost:5173}
+    password-reset-path: /set-password  # For admin-created users to set initial password
+    password-reset-request-path: /reset-password  # For user-initiated password reset requests
+    email-verification-path: /verify-email  # For email verification
+    privacy-policy-path: /privacy-policy
+    terms-path: /terms-of-service
+  
+  customer-portal:
+    url: ${CUSTOMER_PORTAL_URL:http://localhost:3000}
+    password-reset-path: /reset-password  # For customer-initiated password reset requests
+    email-verification-path: /verify-email  # For email verification
+    privacy-policy-path: /privacy-policy
+    terms-path: /terms-of-service
+  
+
+  providers:
+    sendgrid:
+      enabled: ${SENDGRID_ENABLED:false}
+      api-key: ${SENDGRID_API_KEY:}
+      from-email: ${SENDGRID_FROM_EMAIL:}
+      from-name: ${SENDGRID_FROM_NAME:}
+
+    ses:
+      enabled: ${SES_ENABLED:false}
+      access-key: ${SES_ACCESS_KEY:}
+      secret-key: ${SES_SECRET_KEY:}
+      region: ${SES_REGION:us-east-1}
+      from-email: ${SES_FROM_EMAIL:}
+
+    smtp:
+      enabled: ${SMTP_ENABLED:true}
+      mail:
+        host: ${MAIL_HOST:smtp.gmail.com}
+        port: ${MAIL_PORT:587}
+        username: ${MAIL_USERNAME:billingssgabs@gmail.com}
+        password: ${MAIL_PASSWORD:dkmc bsem ihej rgdk}
+        properties:
+          mail:
+            smtp:
+              auth: true
+              starttls:
+                enable: true
+              connectiontimeout: 5000
+              timeout: 5000
+              writetimeout: 5000
+
+    twilio:
+      enabled: ${TWILIO_ENABLED:false}
+      account-sid: ${TWILIO_ACCOUNT_SID:}
+      auth-token: ${TWILIO_AUTH_TOKEN:}
+      from-phone: ${TWILIO_FROM_PHONE:}
+
+    fcm:
+      enabled: ${FCM_ENABLED:true}
+      credentials-file: ${FCM_CREDENTIALS_FILE:lz-insurance-firebase.json}
+      project-id: ${FCM_PROJECT_ID:}
+
+    expo:
+      enabled: ${EXPO_ENABLED:true}
+      access-token: ${EXPO_ACCESS_TOKEN:}
+
+  websocket:
+    enabled: true
+    endpoint: /ws
+    allowed-origins: "*"
+    heartbeat-interval: 30000
+
+  alerts:
+    error-rate-threshold: 10.0
+    latency-threshold-ms: 5000
+    queue-depth-threshold: 10000
+    dlq-threshold: 100
+    admin-emails: ${ADMIN_EMAILS:admin@example.com}
+
+  i18n:
+    default-locale: en
+    supported-locales: en,fr,es,ar
+    message-basename: messages
+
+  external-services:
+    user-service:
+      enabled: ${USER_SERVICE_ENABLED:true}
+      base-url: ${USER_SERVICE_BASE_URL:http://localhost:8081}
+      get-user-url: ${USER_SERVICE_GET_USER_URL:/user/get/}
+      api-prefix: ${USER_SERVICE_API_PREFIX:}
+      timeout-ms: ${USER_SERVICE_TIMEOUT_MS:5000}
+      retry-enabled: ${USER_SERVICE_RETRY_ENABLED:true}
+      retry-max-attempts: ${USER_SERVICE_RETRY_MAX_ATTEMPTS:3}
+      use-bearer-token: ${USER_SERVICE_USE_BEARER_TOKEN:false}
+      bearer-token: ${USER_SERVICE_BEARER_TOKEN:}
+      use-oauth2: ${USER_SERVICE_USE_OAUTH2:true}
+    oauth2:
+      enabled: ${OAUTH2_ENABLED:true}
+      client-id: ${OAUTH2_CLIENT_ID:notification-service}
+      client-secret: ${OAUTH2_CLIENT_SECRET:}
+      token-cache-ttl-seconds: ${OAUTH2_TOKEN_CACHE_TTL:300}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,loggers
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when_authorized
+      probes:
+        enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  level:
+    com.zote.notification: ${LOG_LEVEL:INFO}
+    org.springframework.kafka: WARN
+    org.apache.kafka: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/notification-service.log
+    max-size: 10MB
+    max-history: 30
+
+server:
+  port: ${SERVER_PORT:8086}
+#  servlet:
+#    context-path: /notification
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/json,application/javascript
+    min-response-size: 1024

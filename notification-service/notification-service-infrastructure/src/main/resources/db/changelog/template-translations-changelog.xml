@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="create-template-translations-table" author="Dylan_zote">
+        <createTable tableName="template_translations">
+            <column name="id" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="template_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locale" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject" type="TEXT"/>
+            <column name="body" type="TEXT"/>
+            <!-- Auditable fields -->
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="template_translations"
+                                 baseColumnNames="template_id"
+                                 constraintName="fk_translations_template"
+                                 referencedTableName="notification_templates"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+        <createIndex tableName="template_translations" indexName="idx_translations_template_locale">
+            <column name="template_id"/>
+            <column name="locale"/>
+        </createIndex>
+
+        <addUniqueConstraint tableName="template_translations"
+                             constraintName="uk_translations_template_locale"
+                             columnNames="template_id,locale"/>
+    </changeSet>
+
+</databaseChangeLog>
+

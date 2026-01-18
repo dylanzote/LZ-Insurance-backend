@@ -1,0 +1,75 @@
+# ============================================================================
+# Redis Configuration Profile
+# ============================================================================
+# To use Redis in your service, include this profile in your application.yml:
+#
+#   spring:
+#     profiles:
+#       include: redis
+#
+# This provides base Redis configuration. Override specific settings in your service.
+# ============================================================================
+
+spring:
+  data:
+    redis:
+      host: ${REDIS_HOST:redis-12876.c232.us-east-1-2.ec2.cloud.redislabs.com}
+      port: ${REDIS_PORT:12876}
+      username: default
+      password: ${REDIS_PASSWORD:kC0EhAnL6Wlmj7ycIGyJHt0ryVGIkcqh}
+      database: ${REDIS_DATABASE:0}
+      timeout: 2000ms
+      ssl:
+        enabled: ${REDIS_SSL_ENABLED:false}
+      lettuce:
+        shutdown-timeout: 2000ms
+        pool:
+          max-active: 20
+          max-idle: 10
+          min-idle: 5
+          max-wait: -1ms
+#spring:
+#  redis:
+#    host: ${REDIS_HOST:redis-12876.c232.us-east-1-2.ec2.cloud.redislabs.com}
+#    port: ${REDIS_PORT:12876}
+#    username: default
+#    password: ${REDIS_PASSWORD:kC0EhAnL6Wlmj7ycIGyJHt0ryVGIkcqh}
+#    database: ${REDIS_DATABASE:0}
+#    timeout: 2000ms
+#    ssl:
+#      enabled: ${REDIS_SSL_ENABLED:false}
+#    lettuce:
+#      shutdown-timeout: 200ms
+#      pool:
+#        max-active: 20
+#        max-idle: 10
+#        min-idle: 5
+#        max-wait: -1ms
+
+
+# ============================================================================
+# Service-Specific Redis Configuration
+# ============================================================================
+# Services can override these defaults in their own application.yml:
+#
+# Example for notification-service:
+#   spring:
+#     profiles:
+#       include: redis
+#     redis:
+#       host: redis-cluster.example.com
+#       port: 6379
+#       password: ${REDIS_PASSWORD}
+#       ssl:
+#         enabled: true
+#     cache:
+#       redis:
+#         key-prefix: notification:cache
+# ============================================================================
+
+logging:
+  level:
+    # Redis client logging
+    io.lettuce.core: WARN
+    org.springframework.data.redis: INFO
+
