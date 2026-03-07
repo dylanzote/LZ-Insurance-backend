@@ -68,6 +68,8 @@ public interface UserPort {
     
     void verifyTwoFactorCode(String code, TwoFacMethod method);
 
+    void verify2FACode(String code);
+
     void disableTwoFactor();
 
     AuthData impersonateUser(String userId);

@@ -170,6 +170,16 @@ public interface UserApi {
     @RolesAllowed({Permissions.IS_ADMIN, Permissions.IS_USER, Permissions.IS_AGENT, Permissions.IS_CUSTOMER})
     void verifyTwoStepCode(@RequestParam("code") String code, @RequestParam("method") String method);
 
+    @Operation(summary = "Verify two-factor authentication code for sensitive operations", 
+               description = "Verifies a 2FA code for users who already have 2FA enabled. " +
+                           "This endpoint is used before performing sensitive operations like password change or profile update. " +
+                           "Code must be requested via /user/send-verification-code first.")
+    @PostMapping("verify-2fa-code")
+    @RateLimit(limit = 10, window = 15, timeUnit = TimeUnit.MINUTES, keyStrategy = RateLimitKeyStrategy.USER,
+               message = "Too many verification attempts. Please try again in 15 minutes.")
+    @RolesAllowed({Permissions.IS_ADMIN, Permissions.IS_USER, Permissions.IS_AGENT, Permissions.IS_CUSTOMER})
+    void verify2FACode(@RequestParam("code") String code);
+
     @Operation(summary = "disable two-step verification")
     @PostMapping("disable-two-step-verification")
     @RolesAllowed({Permissions.IS_ADMIN, Permissions.IS_USER, Permissions.IS_AGENT, Permissions.IS_CUSTOMER})

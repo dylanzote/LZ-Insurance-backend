@@ -24,6 +24,8 @@ public interface DeviceRepository extends JpaRepository<UserDeviceEntity, String
 
     void deleteByUserId(String userId);
 
+    void deleteByDeviceId(String deviceId);
+
     Optional<UserDeviceEntity> findByDeviceId(String deviceId);
 
     @Query("SELECT d.pushToken FROM UserDeviceEntity d WHERE d.userId = :userId AND d.isActive = true AND d.pushToken IS NOT NULL")

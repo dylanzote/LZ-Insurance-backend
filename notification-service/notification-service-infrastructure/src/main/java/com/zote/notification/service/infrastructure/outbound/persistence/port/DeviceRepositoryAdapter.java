@@ -97,6 +97,12 @@ public class DeviceRepositoryAdapter implements DeviceRepositoryPort {
     }
 
     @Override
+    public void deleteByDeviceId(String deviceId) {
+        log.info("deleting device with deviceId: {}", deviceId);
+        deviceRepository.deleteByDeviceId(deviceId);
+    }
+
+    @Override
     public void updateLastSeen(String deviceId, LocalDateTime lastSeenAt) {
         log.info("updating last seen for deviceId: {} to {}", deviceId, lastSeenAt);
         deviceRepository.findById(deviceId).ifPresent(deviceEntity -> {

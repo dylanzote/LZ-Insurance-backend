@@ -36,19 +36,16 @@ public class DeviceSupport {
             .lastSeenAt(LocalDateTime.now())
             .subscribedTopics(registerUserDeviceData.getInitialTopics() != null ?
                 registerUserDeviceData.getInitialTopics() : Set.of());
-        
-        // Set platform-specific tokens
+
         if (isExpo) {
-            // Expo uses a single push token
             builder.pushToken(pushToken);
         } else {
-            // Native platforms: separate FCM and APNS tokens
             if (isAndroid(registerUserDeviceData.getPlatform())) {
                 builder.fcmToken(pushToken);
             } else if (isIOS(registerUserDeviceData.getPlatform())) {
                 builder.apnsToken(pushToken);
             } else {
-                builder.pushToken(pushToken); // Web or other
+                builder.pushToken(pushToken);
             }
         }
         
@@ -56,17 +53,17 @@ public class DeviceSupport {
     }
     
     public boolean isExpoPlatform(DevicePlatform platform) {
-        return platform == DevicePlatform.EXPO_IOS ||
-               platform == DevicePlatform.EXPO_ANDROID ||
+        return platform == DevicePlatform.IOS ||
+               platform == DevicePlatform.ANDROID ||
                platform == DevicePlatform.EXPO_WEB;
     }
     
     public boolean isAndroid(DevicePlatform platform) {
-        return platform == DevicePlatform.ANDROID;
+        return platform == DevicePlatform.EXPO_ANDROID;
     }
     
     public boolean isIOS(DevicePlatform platform) {
-        return platform == DevicePlatform.IOS;
+        return platform == DevicePlatform.EXPO_IOS;
     }
     
     public UserDevice updateUserDevice(UserDevice userDevice, RegisterDeviceData registerDeviceData) {

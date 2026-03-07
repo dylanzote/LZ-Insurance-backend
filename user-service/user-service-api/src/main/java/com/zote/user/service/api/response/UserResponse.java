@@ -3,6 +3,7 @@ package com.zote.user.service.api.response;
 import com.zote.common.utils.enums.Gender;
 import com.zote.common.utils.enums.Language;
 import com.zote.common.utils.enums.Status;
+import com.zote.common.utils.enums.TwoFacMethod;
 import com.zote.user.service.domain.model.User;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +34,7 @@ public class UserResponse {
     private String branchId;
     private String department;
     private boolean twoFactorEnabled; // Whether two-factor authentication is enabled
+    private TwoFacMethod twoFactorMethod; // Two-factor authentication method (EMAIL or SMS)
     private AuthResponse authResponse;
     private String createdBy;
     private LocalDateTime createdAt;

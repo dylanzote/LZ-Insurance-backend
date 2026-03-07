@@ -73,7 +73,7 @@ public class TwoFactorAuthenticationService {
     public void verifyAndEnableTwoFactor(User user, String code, TwoFacMethod method) {
         log.info("Verifying and enabling 2FA for user: {} with method: {}", user.getId(), method);
 
-        validateVerificationCodeFormat(code);
+        validateVerificationCodeFormatPrivate(code);
         if (user.isTwoFactorEnabled()) {
             throw new FunctionalError(SecurityConstants.ERROR_2FA_ALREADY_ENABLED);
         }
@@ -105,6 +105,9 @@ public class TwoFactorAuthenticationService {
         if (method == TwoFacMethod.EMAIL) {
             if (!StringUtils.hasText(user.getEmail())) {
                 throw new FunctionalError(SecurityConstants.ERROR_EMAIL_REQUIRED_FOR_2FA);
+            }
+            if (!user.isEmailConfirmed()) {
+                throw new FunctionalError(SecurityConstants.ERROR_EMAIL_NOT_VERIFIED_FOR_2FA);
             }
         } else if (method == TwoFacMethod.SMS && !StringUtils.hasText(user.getPhoneNumber())) {
                 throw new FunctionalError(SecurityConstants.ERROR_PHONE_REQUIRED_FOR_2FA);
@@ -270,10 +273,14 @@ public class TwoFactorAuthenticationService {
         activityLogger.logActivity(userId, activity, SecurityConstants.MODULE_PROFILE, details);
     }
 
-    private void validateVerificationCodeFormat(String code) {
+    public void validateVerificationCodeFormat(String code) {
         if (code == null || code.length() != 6 || !code.matches("\\d{6}")) {
             throw new FunctionalError(SecurityConstants.ERROR_INVALID_2FA_CODE_FORMAT);
         }
+    }
+
+    private void validateVerificationCodeFormatPrivate(String code) {
+        validateVerificationCodeFormat(code);
     }
 
 

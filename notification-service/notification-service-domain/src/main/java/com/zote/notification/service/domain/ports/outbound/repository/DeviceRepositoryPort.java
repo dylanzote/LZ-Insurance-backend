@@ -18,6 +18,8 @@ public interface DeviceRepositoryPort {
     void deleteById(String id);
     void deactivateToken(String pushToken);
     void deleteByUserId(String userId);
+
+    void deleteByDeviceId(String deviceId);
     void updateLastSeen(String deviceId, LocalDateTime lastSeenAt);
 
     // Topic management

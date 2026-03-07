@@ -392,6 +392,25 @@ public class UserImpl implements UserPort {
     }
 
     @Override
+    public void verify2FACode(String code) {
+        log.info("Verify 2FA code for sensitive operation");
+        var currentUser = userSupport.getCurrentUser();
+
+        if (!currentUser.isTwoFactorEnabled()) {
+            throw new FunctionalError(SecurityConstants.ERROR_2FA_NOT_ENABLED);
+        }
+
+        twoFactorAuthenticationService.validateVerificationCodeFormat(code);
+
+        boolean isValid = twoFactorAuthenticationService.verifyTwoFactorCode(currentUser.getId(), code);
+        if (!isValid) {
+            throw new FunctionalError(SecurityConstants.ERROR_INVALID_2FA_CODE);
+        }
+        
+        log.info("2FA code verified successfully for user: {}", currentUser.getId());
+    }
+
+    @Override
     public void disableTwoFactor() {
         log.info("Disable two-step verification request");
         var currentUser = userSupport.getCurrentUser();

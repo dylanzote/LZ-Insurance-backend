@@ -171,6 +171,12 @@ public class UserService implements UserApi {
     }
 
     @Override
+    public void verify2FACode(String code) {
+        log.info("incoming request for verifying 2FA code for sensitive operation");
+        userPort.verify2FACode(code);
+    }
+
+    @Override
     public void disableTwoStepVerification() {
         log.info("incoming request for disabling two-step verification");
         userPort.disableTwoFactor();

@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    include: common, keycloak, notification, kafka
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/policy-service
+    username: postgres
+    password: root
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  application:
+    name: policy-service
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: ${SERVER_PORT:8085}

@@ -34,6 +34,7 @@
         <module>resourcebundle-adapter</module>
         <module>notification-service</module>
         <module>Kafka-adapter</module>
+        <module>policy-service</module>
     </modules>
 
 </project>

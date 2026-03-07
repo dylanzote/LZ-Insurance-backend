@@ -35,7 +35,7 @@ public class ManageDevicesImpl implements ManageDevicesPort {
     @Override
     public void unregisterDevice(String deviceId) {
         log.info("Unregistering device: {}", deviceId);
-        UserDevice device = deviceRepository.findById(deviceId);
+        UserDevice device = deviceRepository.findByDeviceId(deviceId);
         deviceRepository.deleteById(device.getId());
         log.info("Device unregistered successfully: {}", deviceId);
     }

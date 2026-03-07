@@ -61,7 +61,7 @@ public class SecurityConfig {
                         .requestMatchers("/messageTemplate/create").permitAll()
                         .requestMatchers("/notification/**").permitAll()
                         .requestMatchers("/actuator/**", "/error", "/ws/**").permitAll()
-                        .requestMatchers("/inspector/**").permitAll()
+                        .requestMatchers("/inspector/**", "role/get-all").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

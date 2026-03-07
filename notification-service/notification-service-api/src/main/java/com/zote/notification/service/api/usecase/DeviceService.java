@@ -24,10 +24,7 @@ public class DeviceService implements DeviceApi {
     @Override
     public DeviceResponse registerDevice(RegisterDeviceRequest request) {
         log.info("API: Registering device for user: {}", request.getUserId());
-        
-        // Validate user exists
         userValidationService.validateAndGetUser(request.getUserId());
-        
         var deviceData = request.toRegisterDeviceData();
         return DeviceResponse.toDeviceResponse(manageDevicesPort.registerDevice(deviceData));
     }

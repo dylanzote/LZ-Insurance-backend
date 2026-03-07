@@ -30,6 +30,9 @@ public enum EventType {
     NOTIFICATION_FAILED("NOTIFICATION_FAILED", "Notification failed to send"),
     NOTIFICATION_DELIVERED("NOTIFICATION_DELIVERED", "Notification delivered"),
     NOTIFICATION_READ("NOTIFICATION_READ", "Notification read by user"),
+
+    POLICY_CREATED("POLICY_CREATED", "policy created"),
+    POLICY_ISSUED("POLICY_ISSUED", "policy issued"),
     
     // Property Service Events (if applicable)
     PROPERTY_CREATED("PROPERTY_CREATED", "Property created"),
