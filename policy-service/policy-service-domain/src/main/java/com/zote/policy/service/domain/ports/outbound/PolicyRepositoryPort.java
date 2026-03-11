@@ -2,6 +2,7 @@ package com.zote.policy.service.domain.ports.outbound;
 
 import com.zote.policy.service.domain.enums.PolicyStatus;
 import com.zote.policy.service.domain.models.Policy;
+import com.zote.policy.service.domain.models.PolicySearchCriteria;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -34,6 +35,11 @@ public interface PolicyRepositoryPort {
     Page<Policy> findExpiringBetween(LocalDate from, LocalDate to, Pageable pageable);
 
     Page<Policy> searchCustomerPolicies(String customerId, String query, Pageable pageable);
+
+    /**
+     * Search and filter policies by combined criteria (12.1, 12.2).
+     */
+    Page<Policy> searchPolicies(PolicySearchCriteria criteria, Pageable pageable);
 
     int updateStatus(String policyId, PolicyStatus status);
 }

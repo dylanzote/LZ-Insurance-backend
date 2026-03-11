@@ -1,20 +1,25 @@
 package com.zote.policy.service.infrastructure.outbound.persistence.repository;
 
 import com.zote.policy.service.domain.enums.PolicyStatus;
+import com.zote.policy.service.domain.models.PolicySearchCriteria;
 import com.zote.policy.service.infrastructure.outbound.entities.PolicyEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PolicyRepository extends JpaRepository<PolicyEntity, String> {
+public interface PolicyRepository extends JpaRepository<PolicyEntity, String>, JpaSpecificationExecutor<PolicyEntity> {
 
     Optional<PolicyEntity> findByPolicyNumber(String policyNumber);
 
@@ -61,4 +66,61 @@ public interface PolicyRepository extends JpaRepository<PolicyEntity, String> {
          where p.id = :policyId
     """)
     int updateStatus(@Param("policyId") String policyId, @Param("status") PolicyStatus status);
+
+    // ---- Analytics (Epic 16) ----
+
+    long countByStatus(PolicyStatus status);
+
+    @Query("select coalesce(sum(p.premiumTotal), 0) from PolicyEntity p where p.status = :status")
+    BigDecimal sumPremiumByStatus(@Param("status") PolicyStatus status);
+
+    @Query("select coalesce(sum(p.premiumTotal), 0) from PolicyEntity p where p.status = com.zote.policy.service.domain.enums.PolicyStatus.ACTIVE")
+    BigDecimal sumPremiumActive();
+
+    @Query("select coalesce(avg(p.premiumTotal), 0) from PolicyEntity p where p.status = com.zote.policy.service.domain.enums.PolicyStatus.ACTIVE")
+    BigDecimal avgPremiumActive();
+
+    @Query("select p.status, count(p) from PolicyEntity p group by p.status")
+    List<Object[]> countGroupByStatus();
+
+    @Query("""
+        select count(p) from PolicyEntity p
+        where p.createdAt >= :from and p.createdAt < :to
+        and p.parentPolicyId is null
+    """)
+    long countNewPoliciesInPeriod(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
+
+    @Query("""
+        select count(p) from PolicyEntity p
+        where p.createdAt >= :from and p.createdAt < :to
+        and p.parentPolicyId is not null
+    """)
+    long countRenewalsInPeriod(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
+
+    @Query("""
+        select count(p) from PolicyEntity p
+        where p.expiryDate >= :from and p.expiryDate < :to
+    """)
+    long countExpiringInPeriod(@Param("from") LocalDate from, @Param("to") LocalDate to);
+
+    @Query("""
+        select p.productId, count(p), coalesce(sum(p.premiumTotal), 0) from PolicyEntity p
+        where p.status = 'ACTIVE'
+        group by p.productId
+    """)
+    List<Object[]> aggregatePremiumByProduct();
+
+    @Query("""
+        select p.branchId, count(p), coalesce(sum(p.premiumTotal), 0) from PolicyEntity p
+        where p.status = 'ACTIVE' and p.branchId is not null
+        group by p.branchId
+    """)
+    List<Object[]> aggregatePremiumByBranch();
+
+    @Query("""
+        select p.agentId, count(p), coalesce(sum(p.premiumTotal), 0) from PolicyEntity p
+        where p.status = 'ACTIVE' and p.agentId is not null
+        group by p.agentId
+    """)
+    List<Object[]> aggregatePremiumByAgent();
 }

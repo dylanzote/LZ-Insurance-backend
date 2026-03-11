@@ -51,6 +51,9 @@ public class PaymentEntity extends Auditable {
     @Column(nullable = false, length = 24)
     private PaymentRecordStatus status = PaymentRecordStatus.RECORDED;
 
+    @Column(name = "failure_reason", length = 512)
+    private String failureReason;
+
     public static PaymentEntity toEntity(Payment payment) {
         PaymentEntity entity = new PaymentEntity();
         BeanUtils.copyProperties(payment, entity);

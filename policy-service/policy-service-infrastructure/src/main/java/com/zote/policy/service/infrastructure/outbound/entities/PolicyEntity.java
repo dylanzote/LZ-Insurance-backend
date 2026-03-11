@@ -4,6 +4,7 @@ import com.zote.common.utils.audit.Auditable;
 import com.zote.policy.service.domain.enums.PaymentStatus;
 import com.zote.policy.service.domain.enums.PolicyStatus;
 import com.zote.policy.service.domain.enums.PolicyType;
+import com.zote.policy.service.domain.enums.SaleSource;
 import com.zote.policy.service.domain.models.BillingPlan;
 import com.zote.policy.service.domain.models.Policy;
 import jakarta.persistence.*;
@@ -12,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,9 @@ public class PolicyEntity extends Auditable {
     @Column(name = "customer_id", nullable = false, length = 64)
     private String customerId;
 
+    @Column(name = "product_config_id", nullable = false, length = 64)
+    private String productConfigId;
+
     @Column(name = "agent_id", length = 64)
     private String agentId;
 
@@ -59,7 +64,7 @@ public class PolicyEntity extends Auditable {
     private PaymentStatus paymentStatus;
 
     @Column(nullable = false, length = 3)
-    private String currency = "CAD";
+    private String currency;
 
     @Column(name = "premium_total", nullable = false, precision = 12, scale = 2)
     private BigDecimal premiumTotal = BigDecimal.ZERO;
@@ -69,6 +74,22 @@ public class PolicyEntity extends Auditable {
 
     @Column(name = "expiry_date", nullable = false)
     private LocalDate expiryDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "source", length = 24)
+    private SaleSource source;
+
+    @Column(name = "parent_policy_id", length = 64)
+    private String parentPolicyId;
+
+    @Column(name = "grace_period_days")
+    private Integer gracePeriodDays;
+
+    @Column(name = "issued_at")
+    private LocalDateTime issuedAt;
+
+    @Column(name = "timezone", length = 64)
+    private String timezone;
 
     @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PolicyVersionEntity> versions;

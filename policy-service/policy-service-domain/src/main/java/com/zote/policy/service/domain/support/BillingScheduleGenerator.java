@@ -1,40 +1,45 @@
 package com.zote.policy.service.domain.support;
 
 import com.zote.common.utils.exceptions.FunctionalError;
-import com.zote.policy.service.domain.enums.BillingStatus;
 import com.zote.policy.service.domain.models.BillingPlan;
 import com.zote.policy.service.domain.models.BillingSchedule;
+import com.zote.policy.service.domain.models.Policy;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.math.RoundingMode;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.IntStream;
 
 @Component
 public class BillingScheduleGenerator {
-    public List<BillingSchedule> generate(String policyId,
-                                          BillingPlan plan,
-                                          BigDecimal premiumTotal,
-                                          LocalDate effectiveDate,
-                                          int installmentsCount) {
-        if (plan == BillingPlan.FULL) return List.of();
+
+    /**
+     * Generates billing schedule with due dates aligned to billing plan:
+     * MONTHLY: each installment due every 1 month
+     * QUARTERLY: each installment due every 3 months
+     */
+    public List<BillingSchedule> generate(Policy policy, int installmentsCount) {
+        if (policy.getBillingPlan() == BillingPlan.FULL) return List.of();
 
         if (installmentsCount <= 0)
             throw new FunctionalError("installmentsCount must be > 0 for installment plans");
 
-        BigDecimal installmentAmount = premiumTotal
-                .divide(BigDecimal.valueOf(installmentsCount), 2, java.math.RoundingMode.HALF_UP);
+        int monthsPerInstallment = switch (policy.getBillingPlan()) {
+            case MONTHLY -> 1;
+            case QUARTERLY -> 3;
+            default -> 1;
+        };
 
-        return java.util.stream.IntStream.rangeClosed(1, installmentsCount)
-                .mapToObj(i -> BillingSchedule.builder()
-                        .id(UUID.randomUUID().toString())
-                        .policyId(policyId)
-                        .installmentNo(i)
-                        .dueDate(effectiveDate.plusMonths(i - 1)) // first due on effective date
-                        .amount(installmentAmount)
-                        .status(BillingStatus.DUE)
-                        .build())
+        var installmentAmount = policy.getPremiumTotal()
+                .divide(BigDecimal.valueOf(installmentsCount), 2, RoundingMode.HALF_UP);
+
+        return IntStream.rangeClosed(1, installmentsCount)
+                .mapToObj(i -> {
+                    var dueDate = policy.getEffectiveDate().plusMonths((i - 1) * monthsPerInstallment);
+                    return BillingScheduleBuilderSupport.buildInstallment(
+                            policy.getId(), i, dueDate, installmentAmount);
+                })
                 .toList();
     }
 }

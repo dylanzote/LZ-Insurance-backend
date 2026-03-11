@@ -1,0 +1,42 @@
+---
+description: LZ Insurance coding standards - builders, parameters, config, architecture
+alwaysApply: true
+---
+
+# LZ Insurance - Project Standards
+
+Apply these rules consistently when reviewing, refactoring, or extending any entity, service, or workflow.
+
+## Builder Pattern
+
+- **Always** use the builder pattern for complex object creation.
+- Keep methods short, readable, and expressive.
+- All builders related to Policy live in `PolicyBuilderSupport`.
+- Create similar builder support classes for other domains (e.g., `QuoteBuilderSupport`, `EndorsementBuilderSupport`).
+- Use builders to centralize construction logic and validation.
+
+## Method Signatures
+
+- **Never** allow more than 4 parameters in a method signature.
+- If more parameters are needed:
+  - Pass a domain object
+  - Pass a request object
+  - Create a dedicated parameter object (e.g., `RecordPaymentData`, `EndorsePolicyData`)
+
+## No Hardcoded Values
+
+- **Avoid hardcoded values entirely.**
+- All data must come from:
+  - User input
+  - Client requests
+  - System configuration
+  - Environment variables
+  - Application settings
+- Use `@ConfigurationProperties`, ports (e.g., `PolicyDefaultsPort`), and injectable config.
+
+## Code Quality
+
+- Maintain clean, reusable, readable code.
+- Respect the project's architecture and domain boundaries.
+- Follow hexagonal architecture: domain → ports → adapters.
+- Keep domain independent of infrastructure.

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="quote-underwriting-columns" author="system">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="quote"/>
+            <not><columnExists tableName="quote" columnName="underwriting_reason"/></not>
+        </preConditions>
+        <addColumn tableName="quote">
+            <column name="underwriting_reason" type="varchar(1024)"/>
+            <column name="underwriting_decided_by" type="varchar(64)"/>
+            <column name="underwriting_decided_at" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="underwriting-note-table" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="underwriting_note"/></not>
+        </preConditions>
+        <createTable tableName="underwriting_note">
+            <column name="id" type="varchar(64)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="quote_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="note" type="varchar(2048)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)"/>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_underwriting_note_quote_id" tableName="underwriting_note">
+            <column name="quote_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="quote-parent-policy-id" author="system">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="quote"/>
+            <not><columnExists tableName="quote" columnName="parent_policy_id"/></not>
+        </preConditions>
+        <addColumn tableName="quote">
+            <column name="parent_policy_id" type="varchar(64)"/>
+        </addColumn>
+        <createIndex indexName="idx_quote_parent_policy_id" tableName="quote">
+            <column name="parent_policy_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="endorsement-request-table" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="endorsement_request"/></not>
+        </preConditions>
+        <createTable tableName="endorsement_request">
+            <column name="id" type="varchar(64)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="policy_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+            <column name="changes" type="jsonb"/>
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="requested_by" type="varchar(64)"/>
+            <column name="requested_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="decided_by" type="varchar(64)"/>
+            <column name="decided_at" type="timestamp"/>
+            <column name="rejection_reason" type="varchar(1024)"/>
+            <column name="endorsement_id" type="varchar(64)"/>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_endorsement_request_policy_id" tableName="endorsement_request">
+            <column name="policy_id"/>
+        </createIndex>
+        <createIndex indexName="idx_endorsement_request_status" tableName="endorsement_request">
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="cancellation-request-table" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="cancellation_request"/></not>
+        </preConditions>
+        <createTable tableName="cancellation_request">
+            <column name="id" type="varchar(64)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="policy_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cancellation_type" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reason" type="text"/>
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="requested_by" type="varchar(64)"/>
+            <column name="requested_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="decided_by" type="varchar(64)"/>
+            <column name="decided_at" type="timestamp"/>
+            <column name="rejection_reason" type="varchar(1024)"/>
+            <column name="effective_date" type="date"/>
+            <column name="refund_amount" type="decimal(19,4)"/>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_cancellation_request_policy_id" tableName="cancellation_request">
+            <column name="policy_id"/>
+        </createIndex>
+        <createIndex indexName="idx_cancellation_request_status" tableName="cancellation_request">
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="payment-failure-reason" author="system">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="payment"/>
+            <not><columnExists tableName="payment" columnName="failure_reason"/></not>
+        </preConditions>
+        <addColumn tableName="payment">
+            <column name="failure_reason" type="varchar(512)"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

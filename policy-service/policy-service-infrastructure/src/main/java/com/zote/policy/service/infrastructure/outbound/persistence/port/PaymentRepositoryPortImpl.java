@@ -6,6 +6,7 @@ import com.zote.policy.service.domain.models.Payment;
 import com.zote.policy.service.domain.ports.outbound.PaymentRepositoryPort;
 import com.zote.policy.service.infrastructure.outbound.entities.PaymentEntity;
 import com.zote.policy.service.infrastructure.outbound.persistence.repository.PaymentRepository;
+import com.zote.policy.service.infrastructure.outbound.persistence.repository.PolicyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,11 +23,16 @@ import java.util.List;
 public class PaymentRepositoryPortImpl  implements PaymentRepositoryPort {
 
     private final PaymentRepository paymentRepository;
+    private final PolicyRepository policyRepository;
 
     @Override
     public Payment savePayment(Payment payment) {
         log.info("Saving payment {}", payment);
-        return paymentRepository.save(PaymentEntity.toEntity(payment)).toDto();
+        var entity = PaymentEntity.toEntity(payment);
+        if (payment.getPolicyId() != null && entity.getPolicy() == null) {
+            entity.setPolicy(policyRepository.getReferenceById(payment.getPolicyId()));
+        }
+        return paymentRepository.save(entity).toDto();
     }
 
     @Override

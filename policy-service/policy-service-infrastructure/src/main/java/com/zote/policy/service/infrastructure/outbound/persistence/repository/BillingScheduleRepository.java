@@ -5,6 +5,8 @@ import com.zote.policy.service.infrastructure.outbound.entities.BillingScheduleE
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -27,4 +29,10 @@ public interface BillingScheduleRepository extends JpaRepository<BillingSchedule
     long countByPolicyIdAndStatus(String policyId, BillingStatus status);
 
     boolean existsByPolicyId(String policyId);
-}
+
+    /** Find distinct policy IDs with overdue billing (for non-payment cancellation 9.7). */
+    @Query("SELECT DISTINCT b.policy.id FROM BillingScheduleEntity b WHERE b.status IN ('DUE','OVERDUE') AND b.dueDate <= :threshold")
+    List<String> findDistinctPolicyIdsWithOverdueBilling(@Param("threshold") LocalDate threshold);
+
+    /** Find DUE schedules with due date before given date (for marking overdue 10.5). */
+    List<BillingScheduleEntity> findByStatusAndDueDateBefore(BillingStatus status, LocalDate date);

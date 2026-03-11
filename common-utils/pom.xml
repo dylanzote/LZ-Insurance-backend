@@ -151,6 +151,15 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- HTML to PDF (for document generation) -->
+        <!-- Source: https://mvnrepository.com/artifact/com.openhtmltopdf/openhtmltopdf-pdfbox -->
+        <dependency>
+            <groupId>com.openhtmltopdf</groupId>
+            <artifactId>openhtmltopdf-pdfbox</artifactId>
+            <version>1.0.10</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!-- Redis for distributed rate limiting (optional) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

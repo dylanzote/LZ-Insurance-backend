@@ -18,6 +18,9 @@ public class PolicyIssuedEvent implements DataEvent {
     private String eventId;
     private LocalDateTime occurredAt;
     private String correlationId;
+    private String policyId;
+    private String policyNumber;
+    private String customerId;
 
     @Override
     public String getEventType() {

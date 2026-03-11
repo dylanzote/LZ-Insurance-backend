@@ -89,4 +89,10 @@ public class ProductConfigRepositoryPortImpl implements ProductConfigRepositoryP
         log.info("Checking required document {} for productConfigId {}", documentType, productConfigId);
         return policyRequiredDocumentRepository.existsByProductConfigIdAndDocumentType(productConfigId, documentType);
     }
+
+    @Override
+    public void deleteRequiredDocument(String productConfigId, RequiredDocumentType documentType) {
+        log.info("Deleting required document {} for productConfigId {}", documentType, productConfigId);
+        policyRequiredDocumentRepository.deleteByProductConfigIdAndDocumentType(productConfigId, documentType);
+    }
 }

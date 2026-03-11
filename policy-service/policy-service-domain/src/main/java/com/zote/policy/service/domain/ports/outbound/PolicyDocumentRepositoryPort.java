@@ -18,6 +18,9 @@ public interface PolicyDocumentRepositoryPort {
 
     Page<PolicyDocument> findAllByPolicyId(String policyId, Pageable pageable);
 
+    /** Retrieve all documents for a policy (11.4). */
+    List<PolicyDocument> findAllByPolicyId(String policyId);
+
     List<PolicyDocument> findAllByPolicyIdAndStatus(String policyId, PolicyDocumentStatus status);
 
     PolicyDocument findByPolicyIdAndTypeAndName(String policyId, PolicyDocumentType type, String name);
@@ -26,5 +29,5 @@ public interface PolicyDocumentRepositoryPort {
 
     long countByPolicyIdAndStatus(String policyId, PolicyDocumentStatus status);
 
-    boolean hasAllRequiredDocumentsVerified(String policyId, List<String> requiredDocTypes);
+    boolean hasAllRequiredDocumentsVerified(String policyId, List<PolicyDocumentType> requiredDocTypes);
 }

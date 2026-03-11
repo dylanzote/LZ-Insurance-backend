@@ -5,8 +5,10 @@ import com.zote.policy.service.domain.enums.PolicyDocumentStatus;
 import com.zote.policy.service.domain.enums.PolicyDocumentType;
 import com.zote.policy.service.domain.models.PolicyDocument;
 import com.zote.policy.service.domain.ports.outbound.PolicyDocumentRepositoryPort;
+import com.zote.policy.service.domain.support.DocumentSupport;
 import com.zote.policy.service.infrastructure.outbound.entities.PolicyDocumentEntity;
 import com.zote.policy.service.infrastructure.outbound.persistence.repository.PolicyDocumentRepository;
+import com.zote.policy.service.infrastructure.outbound.persistence.repository.PolicyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,11 +24,18 @@ import java.util.stream.Collectors;
 public class PolicyDocumentRepositoryPortImpl implements PolicyDocumentRepositoryPort {
 
     private final PolicyDocumentRepository policyDocumentRepository;
+    private final PolicyRepository policyRepository;
+    private final DocumentSupport documentSupport;
 
     @Override
     public PolicyDocument savePolicyDocument(PolicyDocument document) {
+        documentSupport.validatePolicyDocument(document);
         log.info("Saving policy document {}", document);
-        return policyDocumentRepository.save(PolicyDocumentEntity.toEntity(document)).toDto();
+        var entity = PolicyDocumentEntity.toEntity(document);
+        if (document.getPolicyId() != null && entity.getPolicy() == null) {
+            entity.setPolicy(policyRepository.getReferenceById(document.getPolicyId()));
+        }
+        return policyDocumentRepository.save(entity).toDto();
     }
 
     @Override
@@ -48,6 +57,11 @@ public class PolicyDocumentRepositoryPortImpl implements PolicyDocumentRepositor
         log.info("Getting policy documents by policyId {}", policyId);
         return policyDocumentRepository.findAllByPolicyId(policyId, pageable)
                 .map(PolicyDocumentEntity::toDto);
+    }
+
+    @Override
+    public List<PolicyDocument> findAllByPolicyId(String policyId) {
+        return findAllByPolicyId(policyId, PageRequest.of(0, Integer.MAX_VALUE)).getContent();
     }
 
     @Override
@@ -80,7 +94,7 @@ public class PolicyDocumentRepositoryPortImpl implements PolicyDocumentRepositor
     }
 
     @Override
-    public boolean hasAllRequiredDocumentsVerified(String policyId, List<String> requiredDocTypes) {
+    public boolean hasAllRequiredDocumentsVerified(String policyId, List<PolicyDocumentType> requiredDocTypes) {
         log.info("Checking required verified documents for policyId {}", policyId);
 
         var verifiedDocs = policyDocumentRepository.findAllByPolicyIdAndStatus(policyId, PolicyDocumentStatus.VERIFIED)

@@ -7,6 +7,7 @@ import com.zote.policy.service.domain.models.BillingPlan;
 import com.zote.policy.service.domain.models.PolicyProductConfig;
 import com.zote.policy.service.domain.models.PolicyRequiredDocument;
 import com.zote.policy.service.domain.ports.outbound.ProductConfigRepositoryPort;
+import com.zote.policy.service.infrastructure.config.ProductConfigSeedProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class PolicyProductConfigSeeder implements CommandLineRunner {
 
     private final ProductConfigRepositoryPort productConfigRepositoryPort;
+    private final ProductConfigSeedProperties seedProperties;
 
     @Override
     public void run(String... args) {
@@ -33,7 +35,7 @@ public class PolicyProductConfigSeeder implements CommandLineRunner {
     }
 
     private void seedAutoAnnual() {
-        String productId = "AUTO_STD_ANNUAL";
+        String productId = seedProperties.getProductId("AUTO");
         if (productConfigRepositoryPort.existsByProductId(productId)) return;
 
         var config = productConfigRepositoryPort.saveProductConfig(
@@ -62,7 +64,7 @@ public class PolicyProductConfigSeeder implements CommandLineRunner {
     }
 
     private void seedHomeAnnual() {
-        String productId = "HOME_STD_ANNUAL";
+        String productId = seedProperties.getProductId("HOME");
         if (productConfigRepositoryPort.existsByProductId(productId)) return;
 
         var config = productConfigRepositoryPort.saveProductConfig(
@@ -90,7 +92,7 @@ public class PolicyProductConfigSeeder implements CommandLineRunner {
     }
 
     private void seedTravelTrip() {
-        String productId = "TRAVEL_STD_TRIP";
+        String productId = seedProperties.getProductId("TRAVEL");
         if (productConfigRepositoryPort.existsByProductId(productId)) return;
 
         var config = productConfigRepositoryPort.saveProductConfig(
@@ -118,7 +120,7 @@ public class PolicyProductConfigSeeder implements CommandLineRunner {
     }
 
     private void seedHealthAnnual() {
-        String productId = "HEALTH_STD_ANNUAL";
+        String productId = seedProperties.getProductId("HEALTH");
         if (productConfigRepositoryPort.existsByProductId(productId)) return;
 
         var config = productConfigRepositoryPort.saveProductConfig(
@@ -145,7 +147,7 @@ public class PolicyProductConfigSeeder implements CommandLineRunner {
     }
 
     private void seedLifeTerm20() {
-        String productId = "LIFE_TERM_20";
+        String productId = seedProperties.getProductId("LIFE");
         if (productConfigRepositoryPort.existsByProductId(productId)) return;
 
         var config = productConfigRepositoryPort.saveProductConfig(
@@ -173,7 +175,7 @@ public class PolicyProductConfigSeeder implements CommandLineRunner {
     }
 
     private void seedMotorcycleAnnual() {
-        String productId = "MOTO_STD_ANNUAL";
+        String productId = seedProperties.getProductId("MOTORCYCLE");
         if (productConfigRepositoryPort.existsByProductId(productId)) return;
 
         var config = productConfigRepositoryPort.saveProductConfig(

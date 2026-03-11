@@ -7,11 +7,11 @@ import io.minio.http.Method;
 import io.minio.messages.Item;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -137,6 +137,34 @@ public class MinioObjectStorage {
 
     public String getPropertyThumbnailImageName(String propertyId) {
         return "property/thumbnail".concat("/").concat(propertyId).concat(".jpg");
+    }
+
+    /**
+     * Object key for generated documents: documents/{service}/{documentType}/{entityId}-{suffix}.{ext}
+     */
+    public String getDocumentObjectName(String serviceName, String documentType, String entityId, String fileExtension) {
+        String safeService = (serviceName != null && !serviceName.isEmpty()) ? serviceName : "documents";
+        String safeType = (documentType != null && !documentType.isEmpty()) ? documentType : "misc";
+        String safeEntity = (entityId != null && !entityId.isEmpty()) ? entityId : java.util.UUID.randomUUID().toString();
+        String ext = (fileExtension != null && !fileExtension.isEmpty()) ? fileExtension : "pdf";
+        if (!ext.startsWith(".")) ext = "." + ext;
+        return "documents/" + safeService + "/" + safeType + "/" + safeEntity + "-" + UUID.randomUUID().toString().substring(0, 8) + ext;
+    }
+
+    /**
+     * Upload raw bytes (e.g. generated PDF) to MinIO. Returns the object name for later URL retrieval.
+     */
+    @SneakyThrows
+    public String uploadBytes(byte[] content, String objectName, String contentType) {
+        createBucket(minioClient, bucketName);
+        minioClient.putObject(PutObjectArgs.builder()
+                .bucket(bucketName)
+                .object(objectName)
+                .stream(new ByteArrayInputStream(content), content.length, -1)
+                .contentType(contentType != null ? contentType : "application/octet-stream")
+                .build());
+        log.info("Uploaded {} bytes as object: {} to bucket: {}", content.length, objectName, bucketName);
+        return objectName;
     }
 
     @SneakyThrows

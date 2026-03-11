@@ -6,6 +6,7 @@ import com.zote.policy.service.domain.models.Endorsement;
 import com.zote.policy.service.domain.ports.outbound.EndorsementRepositoryPort;
 import com.zote.policy.service.infrastructure.outbound.entities.EndorsementEntity;
 import com.zote.policy.service.infrastructure.outbound.persistence.repository.EndorsementRepository;
+import com.zote.policy.service.infrastructure.outbound.persistence.repository.PolicyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,11 +22,16 @@ import java.util.List;
 public class EndorsementRepositoryPortImpl implements EndorsementRepositoryPort {
 
     private final EndorsementRepository endorsementRepository;
+    private final PolicyRepository policyRepository;
 
     @Override
     public Endorsement saveEndorsement(Endorsement endorsement) {
         log.info("Saving endorsement {}", endorsement);
-        return endorsementRepository.save(EndorsementEntity.toEntity(endorsement)).toDto();
+        var entity = EndorsementEntity.toEntity(endorsement);
+        if (endorsement.getPolicyId() != null) {
+            entity.setPolicy(policyRepository.getReferenceById(endorsement.getPolicyId()));
+        }
+        return endorsementRepository.save(entity).toDto();
     }
 
     @Override

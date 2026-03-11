@@ -1,6 +1,5 @@
 package com.zote.policy.service.domain.models.data;
 
-import com.zote.policy.service.domain.enums.PolicyStatus;
 import com.zote.policy.service.domain.enums.PolicyType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

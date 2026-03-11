@@ -16,3 +16,49 @@ spring:
 
 server:
   port: ${SERVER_PORT:8085}
+
+# Kafka Configuration for Policy and Quote Events
+policy-service-kafka:
+  kafka:
+    topic: ${POLICY_SERVICE_KAFKA_TOPIC:policy-events}
+    quote-topic: ${POLICY_SERVICE_KAFKA_QUOTE_TOPIC:quote-events}
+    payment-topic: ${POLICY_SERVICE_KAFKA_PAYMENT_TOPIC:payment-events}
+
+# Automation config (Epic 13)
+policy:
+  billing:
+    monitoring:
+      cron: ${POLICY_BILLING_CRON:0 0 1 * * ?}  # 01:00 daily - overdue detection
+  renewal:
+    generation:
+      cron: ${POLICY_RENEWAL_CRON:0 0 2 * * ?}  # 02:00 daily - renewal quotes
+  "non-payment":
+    cancellation:
+      cron: ${POLICY_CANCELLATION_CRON:0 0 3 * * ?}  # 03:00 daily - non-payment cancel
+  automation:
+    event-driven:
+      enabled: ${POLICY_EVENT_DRIVEN_ENABLED:false}  # Enable for multi-service event reaction
+  defaults:
+    currency: ${POLICY_DEFAULT_CURRENCY:XAF}
+    timezone: ${POLICY_DEFAULT_TIMEZONE:Africa/Douala}
+    tax-rate: ${POLICY_DEFAULT_TAX_RATE:1.1925}
+    renewal-quote-validity-days: ${POLICY_RENEWAL_QUOTE_VALIDITY_DAYS:30}
+    quote-validity-days: ${POLICY_QUOTE_VALIDITY_DAYS:30}
+    policy-number-max-retries: ${POLICY_NUMBER_MAX_RETRIES:5}
+    renewal-quote-number-prefix: ${POLICY_RENEWAL_QUOTE_PREFIX:REN}
+    renewal-reminder-days-ahead: ${POLICY_RENEWAL_REMINDER_DAYS:30}
+    automation-batch-size: ${POLICY_AUTOMATION_BATCH_SIZE:100}
+  seed:
+    product-config:
+      product-ids:
+        AUTO: ${POLICY_SEED_AUTO_ID:AUTO_STD_ANNUAL}
+        HOME: ${POLICY_SEED_HOME_ID:HOME_STD_ANNUAL}
+        TRAVEL: ${POLICY_SEED_TRAVEL_ID:TRAVEL_STD_TRIP}
+        HEALTH: ${POLICY_SEED_HEALTH_ID:HEALTH_STD_ANNUAL}
+        LIFE: ${POLICY_SEED_LIFE_ID:LIFE_TERM_20}
+        MOTORCYCLE: ${POLICY_SEED_MOTORCYCLE_ID:MOTO_STD_ANNUAL}
+  rating:
+    base-premium: ${POLICY_RATING_BASE_PREMIUM:10000}
+    default-limit: ${POLICY_RATING_DEFAULT_LIMIT:100000}
+    deductible-discount-factor: ${POLICY_RATING_DEDUCTIBLE_DISCOUNT:0.95}
+    tax-rate: ${POLICY_RATING_TAX_RATE:0.1925}

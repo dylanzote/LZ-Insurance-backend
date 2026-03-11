@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- 14.1, 14.6: Comprehensive policy audit log - append-only, immutable -->
+    <changeSet id="policy-audit-log-table" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="policy_audit_log"/></not>
+        </preConditions>
+        <createTable tableName="policy_audit_log">
+            <column name="id" type="varchar(64)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="policy_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="change_type" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entity_type" type="varchar(64)"/>
+            <column name="entity_id" type="varchar(64)"/>
+            <column name="description" type="text"/>
+            <column name="old_value" type="jsonb"/>
+            <column name="new_value" type="jsonb"/>
+            <column name="changed_by" type="varchar(64)"/>
+            <column name="changed_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_policy_audit_log_policy_id" tableName="policy_audit_log">
+            <column name="policy_id"/>
+        </createIndex>
+        <createIndex indexName="idx_policy_audit_log_changed_at" tableName="policy_audit_log">
+            <column name="changed_at"/>
+        </createIndex>
+        <createIndex indexName="idx_policy_audit_log_change_type" tableName="policy_audit_log">
+            <column name="change_type"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- 14.3: Compliance violations -->
+    <changeSet id="compliance-violation-table" author="system">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="compliance_violation"/></not>
+        </preConditions>
+        <createTable tableName="compliance_violation">
+            <column name="id" type="varchar(64)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="policy_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="violation_type" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="severity" type="varchar(24)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(24)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="detected_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resolved_at" type="timestamp"/>
+            <column name="resolved_by" type="varchar(64)"/>
+            <column name="resolution_notes" type="text"/>
+            <column name="metadata" type="jsonb"/>
+        </createTable>
+        <createIndex indexName="idx_compliance_violation_policy_id" tableName="compliance_violation">
+            <column name="policy_id"/>
+        </createIndex>
+        <createIndex indexName="idx_compliance_violation_status" tableName="compliance_violation">
+            <column name="status"/>
+        </createIndex>
+        <createIndex indexName="idx_compliance_violation_detected_at" tableName="compliance_violation">
+            <column name="detected_at"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- 14.2: Regulatory rules on product config -->
+    <changeSet id="product-config-regulatory-columns" author="system">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="policy_product_config"/>
+            <not><columnExists tableName="policy_product_config" columnName="max_premium"/></not>
+        </preConditions>
+        <addColumn tableName="policy_product_config">
+            <column name="max_premium" type="decimal(19,4)"/>
+            <column name="min_premium" type="decimal(19,4)"/>
+            <column name="max_grace_period_days" type="int"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

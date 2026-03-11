@@ -3,13 +3,16 @@ package com.zote.policy.service.infrastructure.outbound.persistence.port;
 import com.zote.common.utils.exceptions.FunctionalError;
 import com.zote.policy.service.domain.enums.PolicyStatus;
 import com.zote.policy.service.domain.models.Policy;
+import com.zote.policy.service.domain.models.PolicySearchCriteria;
 import com.zote.policy.service.domain.ports.outbound.PolicyRepositoryPort;
 import com.zote.policy.service.infrastructure.outbound.entities.PolicyEntity;
 import com.zote.policy.service.infrastructure.outbound.persistence.repository.PolicyRepository;
+import com.zote.policy.service.infrastructure.outbound.persistence.specification.PolicySpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -103,6 +106,13 @@ public class PolicyRepositoryPortImpl implements PolicyRepositoryPort {
     public Page<Policy> searchCustomerPolicies(String customerId, String query, Pageable pageable) {
         log.info("Searching customer policies for customerId {} with query {}", customerId, query);
         return policyRepository.searchCustomerPolicies(customerId, query, pageable).map(PolicyEntity::toDto);
+    }
+
+    @Override
+    public Page<Policy> searchPolicies(PolicySearchCriteria criteria, Pageable pageable) {
+        log.info("Searching policies with criteria: {}", criteria);
+        Specification<PolicyEntity> spec = PolicySpecification.withCriteria(criteria);
+        return policyRepository.findAll(spec, pageable).map(PolicyEntity::toDto);
     }
 
     @Override

@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: "classpath:db/changelog/quote-underwriting-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/automation-audit-changelog.xml"
+  - include:
+      file: "classpath:db/changelog/compliance-audit-changelog.xml"

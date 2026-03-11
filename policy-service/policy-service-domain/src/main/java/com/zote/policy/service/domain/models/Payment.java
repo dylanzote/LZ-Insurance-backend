@@ -24,6 +24,8 @@ public class Payment {
     private String transactionId;
     private PaymentRecordStatus status;
     private Integer installmentNo;
+    /** Reason for failure when status is FAILED (10.4). */
+    private String failureReason;
     private LocalDateTime recordedAt; // maps Auditable.createdAt
     private String createdBy;
     private String lastModifiedBy;

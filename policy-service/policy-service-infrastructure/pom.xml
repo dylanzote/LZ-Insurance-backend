@@ -80,8 +80,26 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.zote.policy.service.api</groupId>
+            <artifactId>policy-service-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.zote.common.utls</groupId>
             <artifactId>common-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zote.kafka.adapter</groupId>
+            <artifactId>Kafka-adapter</artifactId>
+            <version>3.2.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zote.keycloak.adapter</groupId>
+            <artifactId>keycloak-adapter</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

@@ -6,6 +6,7 @@ import com.zote.policy.service.domain.enums.PolicyType;
 import com.zote.policy.service.domain.models.BillingPlan;
 import com.zote.policy.service.domain.models.PolicyProductConfig;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
@@ -53,6 +54,15 @@ public class PolicyProductConfigEntity extends Auditable {
 
     @Column(name = "requires_underwriting", nullable = false)
     private boolean requiresUnderwriting;
+
+    @Column(name = "max_premium", precision = 19, scale = 4)
+    private BigDecimal maxPremium;
+
+    @Column(name = "min_premium", precision = 19, scale = 4)
+    private BigDecimal minPremium;
+
+    @Column(name = "max_grace_period_days")
+    private Integer maxGracePeriodDays;
 
     public static PolicyProductConfigEntity toEntity(PolicyProductConfig model) {
         PolicyProductConfigEntity entity = new PolicyProductConfigEntity();

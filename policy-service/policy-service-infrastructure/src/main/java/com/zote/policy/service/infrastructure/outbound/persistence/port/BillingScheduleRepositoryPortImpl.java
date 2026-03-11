@@ -100,4 +100,16 @@ public class BillingScheduleRepositoryPortImpl implements BillingScheduleReposit
         log.info("Counting billing schedules for policyId {} by status {}", policyId, status);
         return billingScheduleRepository.countByPolicyIdAndStatus(policyId, status);
     }
+
+    @Override
+    public List<String> findDistinctPolicyIdsWithOverdueBilling(LocalDate threshold) {
+        return billingScheduleRepository.findDistinctPolicyIdsWithOverdueBilling(threshold);
+    }
+
+    @Override
+    public List<BillingSchedule> findByStatusAndDueDateBefore(BillingStatus status, LocalDate date) {
+        return billingScheduleRepository.findByStatusAndDueDateBefore(status, date).stream()
+                .map(BillingScheduleEntity::toDto)
+                .toList();
+    }
 }

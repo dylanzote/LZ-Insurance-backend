@@ -24,4 +24,6 @@ public interface ProductConfigRepositoryPort {
     List<PolicyRequiredDocument> findMandatoryRequiredDocuments(String productConfigId);
 
     boolean existsRequiredDocument(String productConfigId, com.zote.policy.service.domain.enums.RequiredDocumentType documentType);
+
+    void deleteRequiredDocument(String productConfigId, com.zote.policy.service.domain.enums.RequiredDocumentType documentType);
 }

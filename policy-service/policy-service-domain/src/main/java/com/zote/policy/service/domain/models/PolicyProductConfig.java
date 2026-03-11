@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -25,6 +26,12 @@ public class PolicyProductConfig {
     private Integer installmentsCount;
     private boolean requireDocuments;
     private boolean requiresUnderwriting;
+    /** Max premium allowed (regulatory 14.2). */
+    private BigDecimal maxPremium;
+    /** Min premium allowed (regulatory 14.2). */
+    private BigDecimal minPremium;
+    /** Max grace period days (regulatory 14.2). */
+    private Integer maxGracePeriodDays;
     private String createdBy;
     private LocalDateTime createdAt;
     private String lastModifiedBy;

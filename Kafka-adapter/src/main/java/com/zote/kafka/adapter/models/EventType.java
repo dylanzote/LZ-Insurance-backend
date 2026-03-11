@@ -33,7 +33,33 @@ public enum EventType {
 
     POLICY_CREATED("POLICY_CREATED", "policy created"),
     POLICY_ISSUED("POLICY_ISSUED", "policy issued"),
-    
+    POLICY_ENDORSED("POLICY_ENDORSED", "policy endorsed"),
+    POLICY_CANCELLED("POLICY_CANCELLED", "policy cancelled"),
+    CANCELLATION_REQUESTED("CANCELLATION_REQUESTED", "cancellation requested by customer"),
+    ENDORSEMENT_REQUESTED("ENDORSEMENT_REQUESTED", "endorsement requested"),
+    ENDORSEMENT_REJECTED("ENDORSEMENT_REJECTED", "endorsement rejected"),
+
+    QUOTE_CREATED("QUOTE_CREATED", "quote created"),
+    QUOTE_ACCEPTED("QUOTE_ACCEPTED", "quote accepted"),
+    QUOTE_REJECTED("QUOTE_REJECTED", "quote rejected"),
+    UNDERWRITING_DECISION("UNDERWRITING_DECISION", "underwriting decision recorded"),
+    RENEWAL_QUOTE_CREATED("RENEWAL_QUOTE_CREATED", "renewal quote created"),
+    POLICY_RENEWED("POLICY_RENEWED", "policy renewed - new term started"),
+
+    PAYMENT_RECORDED("PAYMENT_RECORDED", "payment recorded"),
+    PAYMENT_FAILED("PAYMENT_FAILED", "payment failed"),
+    PAYMENT_OVERDUE("PAYMENT_OVERDUE", "billing schedule marked overdue"),
+
+    DOCUMENT_UPLOADED("DOCUMENT_UPLOADED", "document uploaded"),
+    DOCUMENT_VERIFIED("DOCUMENT_VERIFIED", "document verified"),
+    DOCUMENT_REJECTED("DOCUMENT_REJECTED", "document rejected"),
+    DOCUMENT_DELETED("DOCUMENT_DELETED", "document deleted"),
+
+    COMPLIANCE_VIOLATION_DETECTED("COMPLIANCE_VIOLATION_DETECTED", "compliance violation detected"),
+
+    // Analytics events (16.8 - BI consumption)
+    ANALYTICS_PORTFOLIO_SNAPSHOT("ANALYTICS_PORTFOLIO_SNAPSHOT", "portfolio snapshot published for BI"),
+
     // Property Service Events (if applicable)
     PROPERTY_CREATED("PROPERTY_CREATED", "Property created"),
     PROPERTY_UPDATED("PROPERTY_UPDATED", "Property updated"),

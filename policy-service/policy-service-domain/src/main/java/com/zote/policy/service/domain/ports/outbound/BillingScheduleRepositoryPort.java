@@ -31,4 +31,10 @@ public interface BillingScheduleRepositoryPort {
 
     long countByPolicyIdAndStatus(String policyId, BillingStatus status);
 
+    /** Policy IDs with overdue billing (for non-payment cancellation 9.7). */
+    List<String> findDistinctPolicyIdsWithOverdueBilling(LocalDate threshold);
+
+    /** Find DUE schedules with due date before given date (10.5). */
+    List<BillingSchedule> findByStatusAndDueDateBefore(BillingStatus status, LocalDate date);
+
 }
